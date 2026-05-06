@@ -284,34 +284,70 @@ export default function Home() {
         </motion.section>
 
         {/* ══════════════════════════════════════
+            NEW: THE ONE PRODUCT LAUNCH ENGINE™ (after hero)
+        ══════════════════════════════════════ */}
+        <section className="py-24 px-6 border-t border-white/5">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-4">
+              <span className="text-xs uppercase tracking-widest text-blue-400 font-medium">Our Proprietary System</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-medium text-white text-center mb-6">The One Product Launch Engine™</h2>
+            <p className="text-lg text-white/60 text-center max-w-2xl mx-auto mb-16 leading-relaxed">
+              A structured execution system that takes beginners from idea to live product in 14 days. No guessing. No theory. Just three phases that force you forward.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-blue-500/30 transition-colors">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-xs uppercase tracking-widest text-blue-400 font-medium">Phase 1</span>
+                  <span className="text-xs text-white/40">Days 1-2</span>
+                </div>
+                <h3 className="text-2xl font-medium text-white mb-4">Product Profile™</h3>
+                <p className="text-white/60 leading-relaxed">Define exactly who you want to help and what specific problem you solve. No vague ideas. No &ldquo;I&apos;ll figure it out later.&rdquo; Clarity before anything else.</p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-blue-500/30 transition-colors">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-xs uppercase tracking-widest text-blue-400 font-medium">Phase 2</span>
+                  <span className="text-xs text-white/40">Days 3-4</span>
+                </div>
+                <h3 className="text-2xl font-medium text-white mb-4">Market Proof Score™</h3>
+                <p className="text-white/60 leading-relaxed">Verify real demand signals before building. Talk to real people. Score the response. If your idea fails this checkpoint, you pivot now — not after wasting 2 weeks building.</p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-blue-500/30 transition-colors">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-xs uppercase tracking-widest text-blue-400 font-medium">Phase 3</span>
+                  <span className="text-xs text-white/40">Days 5-14</span>
+                </div>
+                <h3 className="text-2xl font-medium text-white mb-4">Build &amp; Launch</h3>
+                <p className="text-white/60 leading-relaxed">Daily execution with ready-to-use prompts and templates. The AI Coach guides every step. By Day 14, your product is live on Gumroad, Shopify, or Etsy.</p>
+              </div>
+            </div>
+            <div className="text-center mt-16">
+              <p className="text-2xl md:text-3xl text-white font-medium">This is execution. <span className="text-white/40">Not inspiration.</span></p>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════
             STATS
         ══════════════════════════════════════ */}
         <section className="py-20 px-6 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-600/[0.02] to-transparent" />
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-            {[
-              { num: 8, suffix: ".4M", prefix: "", label: "Americans with side hustles", source: "Bureau of Labor Statistics, 2026" },
-              { num: 891, suffix: "", prefix: "$", label: "Average monthly side income", source: "Bankrate Survey, 2024" },
-              { num: 62, suffix: "%", prefix: "", label: "Quit within 30 days", source: "Industry research data" },
-            ].map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
-                className="relative text-center py-10 px-6 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-zinc-700/80 transition-all duration-300"
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-blue-600/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative">
-                  <div className="text-5xl md:text-6xl font-bold bg-gradient-to-b from-white via-white to-zinc-500 bg-clip-text text-transparent tabular-nums mb-4">
-                    <AnimatedCounter value={s.num} prefix={s.prefix} suffix={s.suffix} />
-                  </div>
-                  <div className="text-sm text-zinc-300 font-medium mb-2">{s.label}</div>
-                  <div className="text-[11px] text-zinc-600">{s.source}</div>
-                </div>
-              </motion.div>
-            ))}
+            <div className="relative text-center py-10 px-6 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-zinc-700/80 transition-all duration-300">
+              <div className="text-5xl md:text-6xl font-bold text-white mb-4">8.4M</div>
+              <div className="text-sm text-zinc-300 font-medium mb-2">Americans with side hustles</div>
+              <div className="text-[11px] text-zinc-600">Bureau of Labor Statistics, 2026</div>
+            </div>
+            <div className="relative text-center py-10 px-6 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-zinc-700/80 transition-all duration-300">
+              <div className="text-5xl md:text-6xl font-bold text-white mb-4">$891</div>
+              <div className="text-sm text-zinc-300 font-medium mb-2">Average monthly side income</div>
+              <div className="text-[11px] text-zinc-600">Bankrate Survey, 2024</div>
+            </div>
+            <div className="relative text-center py-10 px-6 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-zinc-700/80 transition-all duration-300">
+              <div className="text-5xl md:text-6xl font-bold text-white mb-4">62%</div>
+              <div className="text-sm text-zinc-300 font-medium mb-2">Quit within 30 days</div>
+              <div className="text-[11px] text-zinc-600">Industry research data</div>
+            </div>
           </div>
         </section>
 
@@ -721,30 +757,56 @@ export default function Home() {
               <div className="overflow-x-auto rounded-2xl border border-zinc-800/60 bg-zinc-900/30 backdrop-blur-sm">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-800/60">
-                      <th className="text-left py-4 px-5 text-zinc-400 font-medium">Feature</th>
-                      <th className="text-center py-4 px-4 text-zinc-500 font-medium">Free AI</th>
-                      <th className="text-center py-4 px-4 text-zinc-500 font-medium">$497 Courses</th>
-                      <th className="text-center py-4 px-4 text-zinc-500 font-medium">Communities</th>
-                      <th className="text-center py-4 px-4 text-blue-400 font-bold bg-blue-600/[0.04] border-l border-blue-500/10">One Product AI</th>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left py-4 px-5 text-white/60 font-normal">Feature</th>
+                      <th className="text-center py-4 px-4 text-white/60 font-normal">Free AI</th>
+                      <th className="text-center py-4 px-4 text-white/60 font-normal">$497 Courses</th>
+                      <th className="text-center py-4 px-4 text-white/60 font-normal">Communities</th>
+                      <th className="text-center py-4 px-4 text-blue-400 font-medium">One Product AI</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {COMPARISON.map((row, i) => (
-                      <tr key={i} className="border-b border-zinc-800/40 hover:bg-zinc-800/20 transition-colors">
-                        <td className="py-4 px-5 text-zinc-300">{row.feature}</td>
-                        <td className="py-4 px-4"><CompCell value={row.free} /></td>
-                        <td className="py-4 px-4"><CompCell value={row.courses} /></td>
-                        <td className="py-4 px-4"><CompCell value={row.communities} /></td>
-                        <td className="py-4 px-4 bg-blue-600/[0.04] border-l border-blue-500/10"><CompCell value={row.ours} /></td>
-                      </tr>
-                    ))}
-                    <tr className="hover:bg-zinc-800/20 transition-colors">
-                      <td className="py-4 px-5 text-zinc-300 font-bold">Price</td>
-                      <td className="py-4 px-4 text-center text-zinc-500">$0</td>
-                      <td className="py-4 px-4 text-center text-zinc-500">$497+</td>
-                      <td className="py-4 px-4 text-center text-zinc-500">$99/mo</td>
-                      <td className="py-4 px-4 text-center font-bold text-blue-400 bg-blue-600/[0.04] border-l border-blue-500/10">$49</td>
+                    <tr className="border-b border-white/5">
+                      <td className="py-4 px-5 text-white">Personal AI Coach</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-yellow-400">Limited</td>
+                      <td className="text-center text-green-400 font-medium">Yes</td>
+                    </tr>
+                    <tr className="border-b border-white/5">
+                      <td className="py-4 px-5 text-white">Personalized daily tasks</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-yellow-400">Limited</td>
+                      <td className="text-center text-green-400 font-medium">Yes</td>
+                    </tr>
+                    <tr className="border-b border-white/5">
+                      <td className="py-4 px-5 text-white">14-day launch system</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-yellow-400">Limited</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-green-400 font-medium">Yes</td>
+                    </tr>
+                    <tr className="border-b border-white/5">
+                      <td className="py-4 px-5 text-white">One-time payment</td>
+                      <td className="text-center text-green-400">Yes</td>
+                      <td className="text-center text-yellow-400">Limited</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-green-400 font-medium">Yes</td>
+                    </tr>
+                    <tr className="border-b border-white/5">
+                      <td className="py-4 px-5 text-white">Validation before building</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-red-400">No</td>
+                      <td className="text-center text-green-400 font-medium">Yes</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-5 text-white font-medium">Price</td>
+                      <td className="text-center text-zinc-400">$0</td>
+                      <td className="text-center text-zinc-400">$497+</td>
+                      <td className="text-center text-zinc-400">$99/mo</td>
+                      <td className="text-center text-blue-400 font-medium">$49</td>
                     </tr>
                   </tbody>
                 </table>
@@ -907,8 +969,31 @@ export default function Home() {
               <p className="text-xs font-semibold tracking-[0.2em] text-blue-400 uppercase mb-5 text-center">FAQ</p>
               <h2 className="text-3xl font-bold tracking-tight mb-12 text-center">Honest answers.</h2>
             </FadeIn>
-            <div className="space-y-3">
-              {FAQS.map((faq, i) => <FaqItem key={i} faq={faq} index={i} openFaq={openFaq} setOpenFaq={setOpenFaq} />)}
+            <div className="space-y-2">
+              <details className="group border-b border-white/10 py-5">
+                <summary className="cursor-pointer flex justify-between items-center text-white font-medium text-[15px]">Will this work for my niche?<span className="text-white/40 group-open:rotate-180 transition-transform">&#9660;</span></summary>
+                <p className="mt-4 text-zinc-400 text-sm leading-relaxed">The system is niche-agnostic. Whether you sell Notion templates, PDF guides, prompt packs, or mini-courses — the 14-day structure works the same. Your AI Coach helps you choose the right product for your skills.</p>
+              </details>
+              <details className="group border-b border-white/10 py-5">
+                <summary className="cursor-pointer flex justify-between items-center text-white font-medium text-[15px]">I&apos;m a complete beginner. Can I do this?<span className="text-white/40 group-open:rotate-180 transition-transform">&#9660;</span></summary>
+                <p className="mt-4 text-zinc-400 text-sm leading-relaxed">Built for you specifically. We assume zero audience, zero email list, zero experience. Day 1 is 15 minutes. The AI Coach answers every question. You need a computer, internet, and commitment. That&apos;s it.</p>
+              </details>
+              <details className="group border-b border-white/10 py-5">
+                <summary className="cursor-pointer flex justify-between items-center text-white font-medium text-[15px]">What happens when AI tools change?<span className="text-white/40 group-open:rotate-180 transition-transform">&#9660;</span></summary>
+                <p className="mt-4 text-zinc-400 text-sm leading-relaxed">The prompts focus on thinking frameworks, not specific features. They work with ChatGPT, Claude, Gemini, or whatever comes next. No updates needed — the system adapts automatically.</p>
+              </details>
+              <details className="group border-b border-white/10 py-5">
+                <summary className="cursor-pointer flex justify-between items-center text-white font-medium text-[15px]">Why only $49? Is this legit?<span className="text-white/40 group-open:rotate-180 transition-transform">&#9660;</span></summary>
+                <p className="mt-4 text-zinc-400 text-sm leading-relaxed">We believe the $997-course model is broken. It sells hope, not results. $49 removes price as an excuse. Our success metric isn&apos;t revenue — it&apos;s your launched product.</p>
+              </details>
+              <details className="group border-b border-white/10 py-5">
+                <summary className="cursor-pointer flex justify-between items-center text-white font-medium text-[15px]">Who&apos;s behind this?<span className="text-white/40 group-open:rotate-180 transition-transform">&#9660;</span></summary>
+                <p className="mt-4 text-zinc-400 text-sm leading-relaxed">BM Digital LLC, a US-registered company. Zero affiliations with any AI platform. We don&apos;t get paid to recommend tools. Our only incentive is your success. Contact: hello@oneproductai.com</p>
+              </details>
+              <details className="group border-b border-white/10 py-5">
+                <summary className="cursor-pointer flex justify-between items-center text-white font-medium text-[15px]">What if I don&apos;t finish in 14 days?<span className="text-white/40 group-open:rotate-180 transition-transform">&#9660;</span></summary>
+                <p className="mt-4 text-zinc-400 text-sm leading-relaxed">Everything stays yours forever. The AI Coach, portal, guides — all lifetime access. 14 days is the recommended pace, but go at yours. Results vary based on effort and niche.</p>
+              </details>
             </div>
           </div>
         </section>
