@@ -406,7 +406,7 @@ export default function Home() {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40%] h-20 bg-blue-600/[0.06] blur-2xl" />
 
                 <div className="mb-8 relative">
-                  <span className="text-7xl md:text-8xl font-bold text-white">$147</span>
+                  <span className="text-7xl md:text-8xl font-bold text-white">$49</span>
                   <p className="text-zinc-400 mt-3">One&#8209;time payment. Lifetime access.</p>
                 </div>
 
