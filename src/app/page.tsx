@@ -362,6 +362,90 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════
+            INSIDE THE SYSTEM — LIVE PREVIEW
+        ══════════════════════════════════════ */}
+        <section className="py-28 px-6">
+          <div className="max-w-4xl mx-auto">
+            <FadeIn>
+              <p className="text-xs text-zinc-600 text-center mb-3">Updated January 2026 · Supports latest AI tools</p>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">Inside the System — Live Preview</h2>
+              <p className="text-zinc-400 text-center mb-14">This is what you see immediately after purchase.</p>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8 hover:border-blue-500/30 transition-colors duration-300">
+                {/* Top Row */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                  <div className="flex-1">
+                    <p className="text-sm text-zinc-300 font-medium mb-2">Your 14-Day Launch Journey</p>
+                    <div className="relative h-2 rounded-full bg-zinc-800 overflow-hidden">
+                      <div className="absolute inset-y-0 left-0 w-[5%] rounded-full bg-blue-500" />
+                    </div>
+                    <p className="text-xs text-zinc-600 mt-1.5">0% complete</p>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 self-start">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-xs text-zinc-400">AI Coach: Online</span>
+                  </div>
+                </div>
+
+                {/* Day List */}
+                <div className="space-y-0">
+                  <div className="flex items-center justify-between py-4 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-blue-600/15 border border-blue-500/20 flex items-center justify-center">
+                        <span className="text-xs font-bold text-blue-400">1</span>
+                      </div>
+                      <div>
+                        <p className="text-sm text-white font-medium">Product Profile™</p>
+                        <p className="text-xs text-zinc-600">15 minutes</p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-medium text-green-400 px-2.5 py-1 rounded-full bg-green-400/10 border border-green-400/20">Ready</span>
+                  </div>
+
+                  <div className="flex items-center justify-between py-4 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-zinc-800/60 border border-zinc-700/40 flex items-center justify-center">
+                        <span className="text-xs font-bold text-zinc-500">2</span>
+                      </div>
+                      <div>
+                        <p className="text-sm text-zinc-400 font-medium">Market Proof Score™</p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-500 px-2.5 py-1 rounded-full bg-zinc-800/60 border border-zinc-700/30">Locked</span>
+                  </div>
+
+                  <div className="flex items-center justify-between py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-zinc-800/60 border border-zinc-700/40 flex items-center justify-center">
+                        <span className="text-xs font-bold text-zinc-500">3–14</span>
+                      </div>
+                      <div>
+                        <p className="text-sm text-zinc-400 font-medium">Build &amp; Launch</p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-600 px-2.5 py-1 rounded-full bg-zinc-800/40 border border-zinc-700/20">Upcoming</span>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="mt-8 text-center">
+                  <a href="#pricing" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl transition-colors text-sm">
+                    Start Your 14-Day Build
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <p className="text-center text-zinc-600 text-xs mt-8">Lifetime updates included. System evolves as AI tools evolve.</p>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════
             6. AI EXECUTION COACH
         ══════════════════════════════════════ */}
         <section className="py-28 px-6">
