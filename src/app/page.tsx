@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import {
   ArrowRight,
   Shield,
@@ -26,15 +26,51 @@ const FadeIn = ({
   className?: string;
 }) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
     className={className}
   >
     {children}
   </motion.div>
 );
+
+const StaggerItem = ({
+  children,
+  index = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  index?: number;
+  className?: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-40px" }}
+    transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+/* Phase progression line */
+const ProgressLine = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  return (
+    <div ref={ref} className="relative h-[2px] w-full mb-10 overflow-hidden rounded-full bg-zinc-800/50">
+      <motion.div
+        className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-600 via-blue-400 to-violet-500"
+        initial={{ width: "0%" }}
+        animate={isInView ? { width: "100%" } : { width: "0%" }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      />
+    </div>
+  );
+};
 
 /* ─────────────────────────────────────────────
    MAIN PAGE
@@ -47,8 +83,8 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen font-sans overflow-x-hidden bg-[#050507]">
-      {/* Ambient grain */}
-      <div className="pointer-events-none fixed inset-0 z-[1] opacity-[0.025]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`, backgroundRepeat: "repeat", backgroundSize: "128px 128px" }} />
+      {/* Ambient grain overlay — 3% opacity */}
+      <div className="pointer-events-none fixed inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`, backgroundRepeat: "repeat", backgroundSize: "128px 128px" }} />
 
       {/* ── NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.04] bg-[#050507]/80 backdrop-blur-xl">
@@ -74,8 +110,17 @@ export default function Home() {
             1. HERO
         ══════════════════════════════════════ */}
         <motion.section ref={heroRef} style={{ opacity: heroOpacity, scale: heroScale }} className="relative pt-32 pb-40 px-6 overflow-hidden min-h-[95vh] flex items-center">
-          <div className="pointer-events-none absolute top-[20%] left-[10%] w-[500px] h-[500px] rounded-full bg-blue-600/[0.07] blur-[120px]" />
-          <div className="pointer-events-none absolute bottom-[10%] right-[10%] w-[400px] h-[400px] rounded-full bg-violet-600/[0.05] blur-[100px]" />
+          {/* Animated hero glow */}
+          <motion.div
+            className="pointer-events-none absolute top-[20%] left-[10%] w-[500px] h-[500px] rounded-full bg-blue-600/[0.07] blur-[120px]"
+            animate={{ x: [0, 5, -3, 0], y: [0, -4, 3, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="pointer-events-none absolute bottom-[10%] right-[10%] w-[400px] h-[400px] rounded-full bg-violet-600/[0.05] blur-[100px]"
+            animate={{ x: [0, -4, 5, 0], y: [0, 3, -5, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          />
 
           <div className="max-w-5xl mx-auto text-center relative z-20">
             <motion.h1
@@ -109,7 +154,7 @@ export default function Home() {
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.7 }} className="flex flex-col items-center gap-4">
-              <a href="#pricing" className="group inline-flex items-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-2xl transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-600/20 text-base">
+              <a href="#pricing" className="cta-pulse group inline-flex items-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-2xl transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-600/20 text-base">
                 Start Your 14&#8209;Day Build
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
@@ -178,28 +223,31 @@ export default function Home() {
               </p>
             </FadeIn>
 
+            {/* Phase progression line */}
+            <ProgressLine />
+
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 { phase: "Phase 1", days: "Days 1-2", title: "Product Profile™", desc: "Define who you want to help and the specific problem you'll solve. Clear. Simple. Focused.", icon: <Target className="w-6 h-6 text-blue-400" /> },
                 { phase: "Phase 2", days: "Days 3-4", title: "Market Proof Score™", desc: "Before you build anything, you verify real demand signals. If the idea is weak — you adjust. No guessing. No gambling.", icon: <TrendingUp className="w-6 h-6 text-violet-400" /> },
                 { phase: "Phase 3", days: "Days 5-14", title: "Build & Launch", desc: "You follow daily steps using AI prompts and templates. By Day 14, your product is publicly available online.", icon: <Rocket className="w-6 h-6 text-blue-400" /> },
               ].map((item, i) => (
-                <FadeIn key={i} delay={i * 0.12}>
-                  <div className="relative h-full p-8 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-zinc-700/80 transition-all duration-300">
+                <StaggerItem key={i} index={i}>
+                  <div className="relative h-full p-8 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/[0.04] transition-all duration-200">
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="relative">
                       <div className="flex items-center gap-3 mb-6">
                         <span className="text-xs uppercase tracking-widest text-blue-400 font-medium">{item.phase}</span>
                         <span className="text-xs text-zinc-600">{item.days}</span>
                       </div>
-                      <div className="w-14 h-14 rounded-2xl bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center mb-5">
+                      <div className="w-14 h-14 rounded-2xl bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center mb-5 group-hover:border-blue-500/20 transition-colors">
                         {item.icon}
                       </div>
                       <h3 className="text-xl font-bold mb-3 text-white">{item.title}</h3>
                       <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
-                </FadeIn>
+                </StaggerItem>
               ))}
             </div>
 
@@ -219,25 +267,27 @@ export default function Home() {
             <FadeIn>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-14 text-center">What you actually get</h2>
             </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="space-y-4 mb-12">
-                {[
-                  "14-Day Roadmap",
-                  "Product Profile™ framework",
-                  "Market Proof Score™ validation system",
-                  "50+ ready-to-use AI prompts",
-                  "Landing page & email templates",
-                  "Launch checklist",
-                  "Lifetime updates",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 p-4 rounded-xl border border-zinc-800/40 bg-zinc-900/30 hover:border-zinc-700/60 transition-colors">
+            <div className="space-y-4 mb-12">
+              {[
+                "14-Day Roadmap",
+                "Product Profile™ framework",
+                "Market Proof Score™ validation system",
+                "50+ ready-to-use AI prompts",
+                "Landing page & email templates",
+                "Launch checklist",
+                "Lifetime updates",
+              ].map((item, i) => (
+                <StaggerItem key={i} index={i}>
+                  <div className="flex items-center gap-4 p-4 rounded-xl border border-zinc-800/40 bg-zinc-900/30 hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/[0.03] transition-all duration-200">
                     <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
                       <Check className="w-4 h-4 text-green-400" />
                     </div>
                     <span className="text-zinc-200 font-medium">{item}</span>
                   </div>
-                ))}
-              </div>
+                </StaggerItem>
+              ))}
+            </div>
+            <FadeIn delay={0.1}>
               <div className="text-center p-6 rounded-2xl border border-zinc-800/40 bg-zinc-900/20">
                 <p className="text-zinc-400">You use your own AI (ChatGPT, Claude, Gemini).<br /><span className="text-zinc-500">No subscriptions required.</span></p>
               </div>
@@ -253,9 +303,9 @@ export default function Home() {
             <FadeIn>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-12">What happens after 14 days?</h2>
             </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="grid sm:grid-cols-2 gap-6 mb-12">
-                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30">
+            <div className="grid sm:grid-cols-2 gap-6 mb-12">
+              <StaggerItem index={0}>
+                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/[0.03] transition-all duration-200 h-full">
                   <h3 className="text-lg font-bold text-white mb-6">You keep:</h3>
                   <ul className="space-y-3 text-left">
                     {["All prompts", "All templates", "All frameworks", "Lifetime updates"].map((item, i) => (
@@ -265,13 +315,15 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30">
+              </StaggerItem>
+              <StaggerItem index={1}>
+                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/[0.03] transition-all duration-200 h-full">
                   <h3 className="text-lg font-bold text-white mb-6">The only thing that ends:</h3>
                   <p className="text-zinc-400 text-sm leading-relaxed">Daily guided structure.</p>
                   <p className="text-zinc-300 font-medium mt-6 text-sm">You&apos;ll already have launched.</p>
                 </div>
-              </div>
-            </FadeIn>
+              </StaggerItem>
+            </div>
           </div>
         </section>
 
@@ -284,8 +336,8 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-14 text-center">Who this is for</h2>
             </FadeIn>
             <div className="grid md:grid-cols-2 gap-6">
-              <FadeIn delay={0.1}>
-                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 h-full">
+              <StaggerItem index={0}>
+                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/[0.03] transition-all duration-200 h-full">
                   <h3 className="font-bold text-sm mb-6 text-green-400 uppercase tracking-wide">This is for you if:</h3>
                   <ul className="space-y-4">
                     {[
@@ -300,11 +352,11 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-              </FadeIn>
+              </StaggerItem>
 
               {/* 8. WHO THIS IS NOT FOR */}
-              <FadeIn delay={0.2}>
-                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 h-full">
+              <StaggerItem index={1}>
+                <div className="p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/30 hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-600/[0.03] transition-all duration-200 h-full">
                   <h3 className="font-bold text-sm mb-6 text-red-400 uppercase tracking-wide">This is not for you if:</h3>
                   <ul className="space-y-4">
                     {[
@@ -319,7 +371,7 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-              </FadeIn>
+              </StaggerItem>
             </div>
           </div>
         </section>
@@ -330,7 +382,7 @@ export default function Home() {
         <section className="py-32 px-6">
           <div className="max-w-3xl mx-auto text-center">
             <FadeIn>
-              <div className="p-12 rounded-3xl border border-zinc-800/60 bg-zinc-900/30 relative overflow-hidden">
+              <div className="p-12 rounded-3xl border border-zinc-800/60 bg-zinc-900/30 relative overflow-hidden hover:border-blue-500/20 transition-colors duration-300">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
                 <Shield className="w-12 h-12 text-blue-400 mx-auto mb-6" />
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
@@ -349,7 +401,7 @@ export default function Home() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/[0.05] blur-[120px] rounded-full" />
           <div className="max-w-lg mx-auto relative">
             <FadeIn>
-              <div className="relative rounded-3xl border border-blue-500/20 bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-950 p-10 overflow-hidden text-center">
+              <div className="relative rounded-3xl border border-blue-500/20 bg-gradient-to-b from-zinc-900 via-zinc-900 to-zinc-950 p-10 overflow-hidden text-center hover:border-blue-500/30 transition-colors duration-300">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40%] h-20 bg-blue-600/[0.06] blur-2xl" />
 
@@ -375,7 +427,7 @@ export default function Home() {
                   ))}
                 </div>
 
-                <a href="#" className="group block w-full text-center bg-blue-600 hover:bg-blue-500 text-white font-semibold py-4 rounded-2xl transition-all hover:shadow-xl hover:shadow-blue-600/20 hover:scale-[1.01] text-base">
+                <a href="#" className="cta-pulse group block w-full text-center bg-blue-600 hover:bg-blue-500 text-white font-semibold py-4 rounded-2xl transition-all hover:shadow-xl hover:shadow-blue-600/20 hover:scale-[1.01] text-base">
                   Start Your 14&#8209;Day Build
                   <ArrowRight className="inline w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
                 </a>
@@ -438,7 +490,7 @@ export default function Home() {
         <section className="py-32 px-6">
           <div className="max-w-3xl mx-auto">
             <FadeIn>
-              <div className="p-10 rounded-3xl border border-zinc-800/60 bg-zinc-900/30 relative overflow-hidden">
+              <div className="p-10 rounded-3xl border border-zinc-800/60 bg-zinc-900/30 relative overflow-hidden hover:border-blue-500/20 transition-colors duration-300">
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent" />
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                   <div className="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
