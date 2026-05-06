@@ -85,8 +85,8 @@ function AnimatedCounter({ value, suffix = "", prefix = "" }: { value: number; s
 const DAYS = [
   { day: 1, time: "15 min", title: "Quick Win", desc: "10 ideas, pick one", phase: "build" },
   { day: 2, time: "45 min", title: "Project Brain", desc: "Map your product", phase: "build" },
-  { day: 3, time: "60 min", title: "Talk to 5 People", desc: "Real validation", phase: "build" },
-  { day: 4, time: "30 min", title: "Go/No-Go", desc: "Data-driven decision", phase: "build" },
+  { day: 3, time: "60 min", title: "Market Proof Score™", desc: "Validate with real people", phase: "build" },
+  { day: 4, time: "30 min", title: "Go/No-Go Gate", desc: "Data-driven decision", phase: "build" },
   { day: 5, time: "90 min", title: "Generate Content", desc: "AI-assisted draft", phase: "build" },
   { day: 6, time: "75 min", title: "Polish Content", desc: "Refine & edit", phase: "build" },
   { day: 7, time: "60 min", title: "Design Cover", desc: "Visual identity", phase: "build" },
@@ -127,7 +127,7 @@ const COMPARISON = [
   { feature: "14-day launch system", free: false, courses: "partial", communities: false, ours: true },
   { feature: "One-time payment", free: true, courses: "partial", communities: false, ours: true },
   { feature: "Notion workspace", free: false, courses: "partial", communities: false, ours: true },
-  { feature: "Community access", free: false, courses: "partial", communities: true, ours: true },
+  { feature: "Validation before building", free: false, courses: false, communities: false, ours: true },
 ];
 
 const BUILD_IN_PUBLIC = [
@@ -254,7 +254,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed"
             >
-              Not a course. Not a community. A <span className="text-white font-medium">daily AI-guided system</span> that
+              Not a course. Not a community. A <span className="text-white font-medium">14-day guided launch system</span> that
               takes you from idea to launched product. Day 1 is 15 minutes.
             </motion.p>
 
@@ -548,6 +548,80 @@ export default function Home() {
                 </div>
               </FadeIn>
             </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════
+            UNIQUE MECHANISM — "The One Product Launch Engine™"
+        ══════════════════════════════════════ */}
+        <section className="py-32 px-6 relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-violet-600/[0.04] blur-[120px] rounded-full" />
+          <div className="max-w-5xl mx-auto relative">
+            <FadeIn>
+              <p className="text-xs font-semibold tracking-[0.2em] text-violet-400 uppercase mb-5 text-center">The Secret</p>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 text-center leading-[1.1]">
+                The One Product<br /><span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">Launch Engine™</span>
+              </h2>
+              <p className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto text-lg">
+                Most systems skip straight to building. We don&apos;t. You validate <span className="text-white font-medium">before</span> you build. That&apos;s why our users finish.
+              </p>
+            </FadeIn>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  step: "01",
+                  title: "Product Profile™",
+                  desc: "Define exactly what you're building, who it's for, and why they'll pay. No guessing. No 'I think this might work.' Data.",
+                  icon: <Target className="w-6 h-6 text-violet-400" />,
+                  color: "violet",
+                },
+                {
+                  step: "02",
+                  title: "Market Proof Score™",
+                  desc: "Talk to real people. Score demand on a 1-10 scale. Only products scoring 7+ move forward. The rest get killed early — saving you weeks.",
+                  icon: <TrendingUp className="w-6 h-6 text-blue-400" />,
+                  color: "blue",
+                },
+                {
+                  step: "03",
+                  title: "Build Phase",
+                  desc: "Only after validation passes. AI helps you create, polish, and launch in 10 days. No wasted effort on products nobody wants.",
+                  icon: <Rocket className="w-6 h-6 text-violet-400" />,
+                  color: "violet",
+                },
+              ].map((item, i) => (
+                <FadeIn key={i} delay={i * 0.12}>
+                  <div className="relative h-full p-8 rounded-3xl border border-zinc-800/60 bg-zinc-900/40 backdrop-blur-sm overflow-hidden group hover:border-zinc-700/80 transition-all duration-300">
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-700/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className={`absolute -top-16 -right-16 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                      item.color === "violet" ? "bg-violet-600/10" : "bg-blue-600/10"
+                    }`} />
+                    <div className="relative">
+                      <span className="text-xs font-bold text-zinc-600 tracking-widest">STEP {item.step}</span>
+                      <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center mt-4 mb-5 transition-all duration-300 ${
+                        item.color === "violet"
+                          ? "bg-violet-600/10 border-violet-500/20 group-hover:bg-violet-600/20 group-hover:border-violet-500/40"
+                          : "bg-blue-600/10 border-blue-500/20 group-hover:bg-blue-600/20 group-hover:border-blue-500/40"
+                      }`}>
+                        {item.icon}
+                      </div>
+                      <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                      <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+
+            <FadeIn delay={0.3}>
+              <div className="mt-12 text-center">
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-zinc-800/60 bg-zinc-900/40 text-sm text-zinc-400">
+                  <Shield className="w-4 h-4 text-blue-400" />
+                  <span>No product moves past Day 4 without a validated Market Proof Score™</span>
+                </div>
+              </div>
+            </FadeIn>
           </div>
         </section>
 
