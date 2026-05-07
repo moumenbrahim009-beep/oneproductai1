@@ -22,6 +22,7 @@ import {
   Users,
   Trophy,
   Palette,
+  Play,
 } from "lucide-react";
 
 /* ─── Stagger variants ─── */
@@ -67,7 +68,7 @@ const Label = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-/* ─── Progress bar ─── */
+/* ─── Progress bar (animates once in view) ─── */
 const ProgressLine = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -78,6 +79,22 @@ const ProgressLine = () => {
         initial={{ width: "0%" }}
         animate={inView ? { width: "100%" } : { width: "0%" }}
         transition={{ duration: 1, ease: "easeOut" }}
+      />
+    </div>
+  );
+};
+
+/* ─── Notion progress bar (25%, once in view) ─── */
+const NotionProgressBar = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <div ref={ref} className="relative h-1 rounded-full bg-white/[0.06] overflow-hidden">
+      <motion.div
+        className="absolute inset-y-0 left-0 rounded-full bg-blue-500"
+        initial={{ width: "0%" }}
+        animate={inView ? { width: "25%" } : { width: "0%" }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
       />
     </div>
   );
@@ -154,7 +171,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen font-sans overflow-x-hidden bg-[#080810] text-white">
 
-      {/* ── Global noise texture ── */}
+      {/* Noise */}
       <div
         className="pointer-events-none fixed inset-0 z-[1] opacity-[0.022]"
         style={{
@@ -163,7 +180,7 @@ export default function Home() {
         }}
       />
 
-      {/* ── Global page vignette ── */}
+      {/* Global vignette */}
       <div
         className="pointer-events-none fixed inset-0 z-[2]"
         style={{ background: "radial-gradient(ellipse 120% 60% at 50% 0%, rgba(37,99,235,0.06) 0%, transparent 65%)" }}
@@ -173,7 +190,7 @@ export default function Home() {
       <nav className="fixed top-0 inset-x-0 z-50 border-b border-white/[0.04] bg-[#080810]/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 h-[60px] flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-medium tracking-tight">
-            <div className="relative w-6 h-6 rounded-md bg-[#2563EB] flex items-center justify-center shadow-[0_0_12px_rgba(37,99,235,0.5)]">
+            <div className="w-6 h-6 rounded-md bg-[#2563EB] flex items-center justify-center shadow-[0_0_12px_rgba(37,99,235,0.5)]">
               <Rocket className="w-3 h-3 text-white" />
             </div>
             One Product AI
@@ -205,7 +222,7 @@ export default function Home() {
           style={{ opacity: heroOpacity, scale: heroScale }}
           className="relative pt-36 pb-28 px-6 min-h-[90vh] flex items-center overflow-hidden"
         >
-          {/* Dot grid — fades toward bottom */}
+          {/* Dot grid */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
@@ -215,21 +232,17 @@ export default function Home() {
               WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%)",
             }}
           />
-
-          {/* Hero spotlight — sharp beam from top */}
+          {/* Spotlight */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 70% 55% at 50% -5%, rgba(37,99,235,0.18) 0%, transparent 65%)" }}
           />
-
           {/* Breathing glow */}
           <motion.div
             className="pointer-events-none absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-blue-600/[0.06] blur-[160px]"
             animate={{ opacity: [0.15, 0.25, 0.15], scale: [1, 1.05, 1] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           />
-
-          {/* Violet corner accent */}
           <div className="pointer-events-none absolute bottom-[5%] right-[5%] w-[300px] h-[300px] rounded-full bg-violet-600/[0.04] blur-[120px]" />
 
           <div className="max-w-3xl mx-auto text-center relative z-10">
@@ -242,7 +255,6 @@ export default function Home() {
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
                 Early access · Summer 2026
               </div>
-
               <h1 className="text-4xl sm:text-5xl md:text-[3.4rem] font-medium tracking-tight leading-[1.08] mb-6">
                 <span className="block text-white/90">Stop chasing ideas.</span>
                 <span
@@ -329,7 +341,6 @@ export default function Home() {
             THE ENGINE
         ════════════════════════════════════════ */}
         <section id="engine" className="py-20 px-6 relative">
-          {/* Section spotlight */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.07), transparent 70%)" }}
@@ -386,7 +397,6 @@ export default function Home() {
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">Your 14&#8209;Day Map</h2>
             </FadeIn>
-
             <motion.div
               variants={container}
               initial="hidden"
@@ -410,7 +420,6 @@ export default function Home() {
                 </motion.div>
               ))}
             </motion.div>
-
             <FadeIn delay={0.2}>
               <div className="mt-7 flex flex-wrap justify-center gap-6 text-xs text-white/30">
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-blue-400/70" />~17 hours total</span>
@@ -423,55 +432,109 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            DAY 1 PREVIEW
+            SYSTEM PREVIEW — video + notion card
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
-          <div className="max-w-2xl mx-auto">
+        <section className="py-20 px-6 relative">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.05), transparent 70%)" }}
+          />
+          <div className="max-w-5xl mx-auto relative">
             <FadeIn className="text-center mb-10">
               <Label>Live Preview</Label>
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">See Day 1 in Action</h2>
               <p className="text-white/35 text-sm">15 minutes. 3 questions. Your first product direction.</p>
             </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="relative rounded-2xl border border-white/[0.07] bg-white/[0.015] overflow-hidden">
-                <CardHighlight />
-                <div className="flex items-center gap-1.5 px-5 py-3 border-b border-white/[0.05] bg-white/[0.01]">
-                  <div className="w-2 h-2 rounded-full bg-white/10" />
-                  <div className="w-2 h-2 rounded-full bg-white/10" />
-                  <div className="w-2 h-2 rounded-full bg-white/10" />
-                  <span className="text-[11px] text-white/20 ml-3 font-mono">day-1-session.ai</span>
-                </div>
-                <div className="p-6 space-y-5">
-                  <div className="flex gap-3">
-                    <MessageSquare className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-white/20 text-[11px] mb-1">AI Coach</p>
-                      <p className="text-white/50 text-sm leading-relaxed">
-                        Answer 3 questions about your skills, interests, and available time. I&apos;ll generate 5 product directions tailored specifically to you.
-                      </p>
+
+            {/* Two columns — terminal above notion on mobile */}
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid md:grid-cols-2 gap-5 mb-12"
+            >
+              {/* ── Left: video placeholder ── */}
+              <motion.div variants={item}>
+                <div className="relative rounded-2xl bg-black border border-white/[0.07] overflow-hidden aspect-video flex items-center justify-center">
+                  <CardHighlight />
+                  {/* Subtle inner glow */}
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{ background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(37,99,235,0.07), transparent 70%)" }}
+                  />
+                  <div className="relative flex flex-col items-center gap-4 z-10">
+                    <div className="w-14 h-14 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center">
+                      <Play className="w-5 h-5 text-white/40 ml-0.5" />
                     </div>
+                    <p className="text-white/25 text-xs tracking-wide">AI Coach Demo (Coming Soon)</p>
                   </div>
-                  <div className="pl-7 space-y-1.5">
+                </div>
+              </motion.div>
+
+              {/* ── Right: Notion-style checklist ── */}
+              <motion.div variants={item}>
+                <div className="relative rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 shadow-[0_4px_32px_rgba(0,0,0,0.35)] overflow-hidden h-full">
+                  <CardHighlight />
+
+                  {/* Progress bar */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] text-white/25">Progress</span>
+                      <span className="text-[11px] text-blue-400/70">25%</span>
+                    </div>
+                    <NotionProgressBar />
+                  </div>
+
+                  {/* Header + badge */}
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-white/85 font-medium text-sm">Day 1 — Product Profile™</h3>
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-green-400 bg-green-400/[0.07] border border-green-400/20 px-2.5 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                      AI Coach Active
+                    </span>
+                  </div>
+
+                  {/* Checklist */}
+                  <div className="space-y-2.5">
                     {[
-                      { n: "Q1", q: "What do people ask you for help with?" },
-                      { n: "Q2", q: "What can you do for 1 hour without getting bored?" },
-                      { n: "Q3", q: "Who would pay to solve a problem you understand?" },
-                    ].map((q, i) => (
-                      <div key={i} className="px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
-                        <p className="text-[10px] text-white/20 mb-0.5">{q.n}</p>
-                        <p className="text-white/50 text-sm">{q.q}</p>
+                      { done: true,  label: "Define target audience" },
+                      { done: true,  label: "Identify core pain" },
+                      { done: false, label: "Run Market Proof Score™" },
+                      { done: false, label: "Build outline" },
+                    ].map((row, i) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div
+                          className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
+                            row.done
+                              ? "bg-blue-500 border border-blue-500"
+                              : "bg-transparent border border-white/[0.15]"
+                          }`}
+                        >
+                          {row.done && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
+                        </div>
+                        <span
+                          className={`text-sm transition-colors ${
+                            row.done ? "text-white/30 line-through decoration-white/20" : "text-white/65"
+                          }`}
+                        >
+                          {row.label}
+                        </span>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-3">
-                    <Zap className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-white/20 text-[11px] mb-1">Output</p>
-                      <p className="text-white/50 text-sm">5 product directions → pick one → move to Day 2.</p>
-                    </div>
-                  </div>
+
+                  {/* Bottom hint */}
+                  <p className="text-[11px] text-white/20 mt-5 pt-4 border-t border-white/[0.05]">
+                    Next: Run Market Proof Score™ →
+                  </p>
                 </div>
-              </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Bottom CTA */}
+            <FadeIn delay={0.15} className="flex justify-center">
+              <EmailCapture />
             </FadeIn>
           </div>
         </section>
@@ -488,7 +551,6 @@ export default function Home() {
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">Building in Public</h2>
               <p className="text-white/35 text-sm">No launch-day surprises. Here&apos;s exactly where we are.</p>
             </FadeIn>
-
             <motion.div
               variants={container}
               initial="hidden"
@@ -497,9 +559,9 @@ export default function Home() {
               className="grid md:grid-cols-3 gap-4"
             >
               {[
-                { title: "Landing Page", status: "Live",        sc: "text-green-400 bg-green-400/[0.07] border-green-400/20", desc: "You're reading it right now.",                     icon: <Globe   className="w-4 h-4 text-blue-400" /> },
-                { title: "AI Coach",     status: "In Progress", sc: "text-yellow-400 bg-yellow-400/[0.07] border-yellow-400/20", desc: "Prompt library and daily system in development.", icon: <Zap     className="w-4 h-4 text-blue-400" /> },
-                { title: "Launch",       status: "Summer 2026", sc: "text-blue-400 bg-blue-400/[0.07] border-blue-400/20",   desc: "Full product releases Summer 2026.",               icon: <Rocket  className="w-4 h-4 text-blue-400" /> },
+                { title: "Landing Page", status: "Live",        sc: "text-green-400 bg-green-400/[0.07] border-green-400/20",   desc: "You're reading it right now.",                     icon: <Globe  className="w-4 h-4 text-blue-400" /> },
+                { title: "AI Coach",     status: "In Progress", sc: "text-yellow-400 bg-yellow-400/[0.07] border-yellow-400/20", desc: "Prompt library and daily system in development.", icon: <Zap    className="w-4 h-4 text-blue-400" /> },
+                { title: "Launch",       status: "Summer 2026", sc: "text-blue-400 bg-blue-400/[0.07] border-blue-400/20",       desc: "Full product releases Summer 2026.",               icon: <Rocket className="w-4 h-4 text-blue-400" /> },
               ].map((c, i) => (
                 <motion.div key={i} variants={item}>
                   <div className="relative p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02] hover:border-blue-500/25 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-200 overflow-hidden">
@@ -748,7 +810,7 @@ export default function Home() {
               <p className="text-white/35 text-sm">Not everything that looks like a solution actually is.</p>
             </FadeIn>
             <FadeIn delay={0.1}>
-              <div className="overflow-x-auto rounded-2xl border border-white/[0.07] bg-white/[0.015] relative overflow-hidden">
+              <div className="relative overflow-x-auto rounded-2xl border border-white/[0.07] bg-white/[0.015] overflow-hidden">
                 <CardHighlight />
                 <table className="w-full text-sm">
                   <thead>
@@ -845,37 +907,31 @@ export default function Home() {
             PRICING
         ════════════════════════════════════════ */}
         <section id="pricing" className="py-20 px-6 relative">
-          {/* Pricing spotlight — beam from below card */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 55% 45% at 50% 100%, rgba(37,99,235,0.1), transparent 70%)" }}
           />
-          {/* Top spotlight */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 40% 35% at 50% 0%, rgba(37,99,235,0.07), transparent 70%)" }}
           />
-
           <div className="max-w-sm mx-auto relative">
             <FadeIn>
-              <div className="relative rounded-2xl border border-blue-500/[0.18] overflow-hidden"
+              <div
+                className="relative rounded-2xl border border-blue-500/[0.18] overflow-hidden"
                 style={{ background: "linear-gradient(160deg, rgba(37,99,235,0.06) 0%, rgba(255,255,255,0.01) 60%, transparent 100%)" }}
               >
-                {/* Top glow line */}
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
-                {/* Inner corner gradient */}
                 <div
                   className="pointer-events-none absolute inset-0 rounded-2xl"
                   style={{ background: "radial-gradient(ellipse 80% 40% at 50% 0%, rgba(37,99,235,0.1), transparent 60%)" }}
                 />
-
                 <div className="relative p-8 text-center">
                   <div className="mb-7">
                     <Label>One-Time Price</Label>
                     <div className="text-6xl font-medium text-white mt-1">$49</div>
                     <p className="text-white/30 text-sm mt-2">Lifetime access. No subscription.</p>
                   </div>
-
                   <div className="text-left space-y-2 mb-8">
                     {[
                       "Full 14-Day Launch System",
@@ -891,7 +947,6 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-
                   <EmailCapture />
                   <p className="mt-5 text-[11px] text-white/15">14&#8209;day money&#8209;back guarantee. No questions asked.</p>
                 </div>
@@ -941,7 +996,6 @@ export default function Home() {
             CLOSE
         ════════════════════════════════════════ */}
         <section className="py-24 px-6 relative">
-          {/* Closing spotlight — draws the eye to CTA */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 60% 70% at 50% 50%, rgba(37,99,235,0.07), transparent 70%)" }}
