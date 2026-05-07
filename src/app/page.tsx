@@ -22,10 +22,24 @@ import {
   Users,
   Trophy,
   Palette,
-  ArrowRight,
 } from "lucide-react";
 
-/* ─── Animation primitives ─── */
+/* ─── Stagger variants ─── */
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+  },
+};
+
+/* ─── FadeIn (single elements) ─── */
 const FadeIn = ({
   children,
   delay = 0,
@@ -46,26 +60,7 @@ const FadeIn = ({
   </motion.div>
 );
 
-const Stagger = ({
-  children,
-  index = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  index?: number;
-  className?: string;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 16 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-40px" }}
-    transition={{ duration: 0.55, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
-
+/* ─── Progress bar ─── */
 const ProgressLine = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -75,7 +70,7 @@ const ProgressLine = () => {
         className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-600 via-blue-400 to-violet-500"
         initial={{ width: "0%" }}
         animate={inView ? { width: "100%" } : { width: "0%" }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1, ease: "easeOut" }}
       />
     </div>
   );
@@ -117,12 +112,15 @@ const EmailCapture = ({ className = "" }: { className?: string }) => {
           required
           className="flex-1 px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white placeholder-white/25 text-sm focus:outline-none focus:border-blue-500/40 transition-colors"
         />
-        <button
+        <motion.button
           type="submit"
-          className="px-5 py-3 bg-[#2563EB] hover:bg-blue-500 text-white font-medium rounded-xl text-sm transition-all duration-200 whitespace-nowrap hover:shadow-[0_0_20px_rgba(37,99,235,0.25)]"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.15, ease: "easeOut" }}
+          className="px-5 py-3 bg-[#2563EB] hover:bg-blue-500 text-white font-medium rounded-xl text-sm transition-colors duration-200 whitespace-nowrap hover:shadow-[0_0_20px_rgba(37,99,235,0.25)]"
         >
           Get notified at launch
-        </button>
+        </motion.button>
       </div>
       <p className="text-[11px] text-white/25">No spam. One email at launch.</p>
     </form>
@@ -164,9 +162,15 @@ export default function Home() {
           <div className="flex items-center gap-5">
             <a href="#engine" className="text-xs text-white/40 hover:text-white/70 transition-colors hidden sm:block">How it works</a>
             <a href="#pricing" className="text-xs text-white/40 hover:text-white/70 transition-colors hidden sm:block">Pricing</a>
-            <a href="#waitlist" className="text-xs font-medium bg-white text-black px-4 py-2 rounded-lg hover:bg-zinc-100 transition-colors">
+            <motion.a
+              href="#waitlist"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="text-xs font-medium bg-white text-black px-4 py-2 rounded-lg hover:bg-zinc-100 transition-colors"
+            >
               Join Waitlist
-            </a>
+            </motion.a>
           </div>
         </div>
       </nav>
@@ -182,8 +186,14 @@ export default function Home() {
           style={{ opacity: heroOpacity, scale: heroScale }}
           className="relative pt-36 pb-28 px-6 min-h-[90vh] flex items-center overflow-hidden"
         >
-          <div className="pointer-events-none absolute top-[10%] left-[5%] w-[600px] h-[600px] rounded-full bg-blue-600/[0.04] blur-[150px]" />
-          <div className="pointer-events-none absolute bottom-[10%] right-[5%] w-[400px] h-[400px] rounded-full bg-violet-600/[0.03] blur-[130px]" />
+          {/* Breathing glow */}
+          <motion.div
+            className="pointer-events-none absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-blue-600/[0.06] blur-[160px]"
+            animate={{ opacity: [0.15, 0.25, 0.15], scale: [1, 1.05, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* Violet accent */}
+          <div className="pointer-events-none absolute bottom-[10%] right-[5%] w-[350px] h-[350px] rounded-full bg-violet-600/[0.03] blur-[130px]" />
 
           <div className="max-w-3xl mx-auto text-center relative z-10">
             <motion.div
@@ -272,20 +282,24 @@ export default function Home() {
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">
                 The One Product Launch Engine™
               </h2>
-              <p className="text-white/40 text-sm max-w-md mx-auto">
-                Three phases. Clear gates. No skipping.
-              </p>
+              <p className="text-white/40 text-sm max-w-md mx-auto">Three phases. Clear gates. No skipping.</p>
             </FadeIn>
 
             <ProgressLine />
 
-            <div className="grid md:grid-cols-3 gap-4">
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid md:grid-cols-3 gap-4"
+            >
               {[
-                { phase: "Phase 1", days: "Days 1–2", title: "Product Profile™", sub: "Clarity before action.", icon: <Target className="w-4 h-4 text-blue-400" /> },
-                { phase: "Phase 2", days: "Days 3–4", title: "Market Proof Score™", sub: "Demand before effort.", icon: <TrendingUp className="w-4 h-4 text-blue-400" /> },
-                { phase: "Phase 3", days: "Days 5–14", title: "Build & Launch", sub: "Execution before perfection.", icon: <Rocket className="w-4 h-4 text-blue-400" /> },
+                { phase: "Phase 1", days: "Days 1–2", title: "Product Profile™",     sub: "Clarity before action.",     icon: <Target    className="w-4 h-4 text-blue-400" /> },
+                { phase: "Phase 2", days: "Days 3–4", title: "Market Proof Score™", sub: "Demand before effort.",      icon: <TrendingUp className="w-4 h-4 text-blue-400" /> },
+                { phase: "Phase 3", days: "Days 5–14", title: "Build & Launch",      sub: "Execution before perfection.", icon: <Rocket  className="w-4 h-4 text-blue-400" /> },
               ].map((c, i) => (
-                <Stagger key={i} index={i}>
+                <motion.div key={i} variants={item}>
                   <div className="h-full p-6 rounded-2xl border border-white/[0.06] bg-white/[0.015] hover:border-blue-500/25 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-200">
                     <div className="flex items-center gap-2.5 mb-5">
                       <span className="text-[10px] uppercase tracking-widest text-blue-400 font-medium">{c.phase}</span>
@@ -297,9 +311,9 @@ export default function Home() {
                     <h3 className="text-base font-medium mb-1.5 text-white">{c.title}</h3>
                     <p className="text-white/40 text-sm">{c.sub}</p>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -313,7 +327,14 @@ export default function Home() {
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">Your 14&#8209;Day Map</h2>
             </FadeIn>
-            <div className="space-y-1.5">
+
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="space-y-1.5"
+            >
               {[
                 { days: "Day 1–2",   task: "Clarity",    desc: "Define your product and target audience" },
                 { days: "Day 3–4",   task: "Validation", desc: "Verify real demand before building anything" },
@@ -321,15 +342,16 @@ export default function Home() {
                 { days: "Day 10–12", task: "Packaging",  desc: "Landing page, email sequence, checkout" },
                 { days: "Day 13–14", task: "Launch",     desc: "Go live and make your first announcement" },
               ].map((r, i) => (
-                <Stagger key={i} index={i}>
+                <motion.div key={i} variants={item}>
                   <div className="flex items-center gap-5 px-5 py-3.5 rounded-xl border border-white/[0.04] bg-white/[0.015] hover:border-blue-500/20 hover:-translate-y-0.5 transition-all duration-200">
                     <span className="w-20 flex-shrink-0 text-xs font-mono text-blue-400">{r.days}</span>
                     <span className="text-sm font-medium text-white w-24 flex-shrink-0">{r.task}</span>
                     <span className="text-sm text-white/35">{r.desc}</span>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
+
             <FadeIn delay={0.2}>
               <div className="mt-7 flex flex-wrap justify-center gap-6 text-xs text-white/35">
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-blue-400" />~17 hours total</span>
@@ -381,7 +403,7 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-3 pl-0">
+                  <div className="flex gap-3">
                     <Zap className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-white/25 text-[11px] mb-1">Output</p>
@@ -406,7 +428,14 @@ export default function Home() {
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">Building in Public</h2>
               <p className="text-white/40 text-sm">No launch-day surprises. Here&apos;s exactly where we are.</p>
             </FadeIn>
-            <div className="grid md:grid-cols-3 gap-4">
+
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid md:grid-cols-3 gap-4"
+            >
               {[
                 {
                   title: "Landing Page",
@@ -430,7 +459,7 @@ export default function Home() {
                   icon: <Rocket className="w-4 h-4 text-blue-400" />,
                 },
               ].map((c, i) => (
-                <Stagger key={i} index={i}>
+                <motion.div key={i} variants={item}>
                   <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.015] hover:border-blue-500/25 hover:-translate-y-1 transition-all duration-200">
                     <div className="flex items-start justify-between mb-4">
                       <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
@@ -441,9 +470,9 @@ export default function Home() {
                     <p className="text-white font-medium text-sm mb-1.5">{c.title}</p>
                     <p className="text-white/35 text-xs leading-relaxed">{c.desc}</p>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -457,8 +486,14 @@ export default function Home() {
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">Your AI Execution Coach</h2>
             </FadeIn>
-            <div className="grid md:grid-cols-2 gap-4">
-              <Stagger index={0}>
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid md:grid-cols-2 gap-4"
+            >
+              <motion.div variants={item}>
                 <div className="p-7 rounded-2xl border border-white/[0.06] bg-white/[0.015] h-full hover:border-green-500/15 transition-colors duration-200">
                   <p className="text-[11px] font-medium text-green-400 uppercase tracking-widest mb-5">It does</p>
                   <ul className="space-y-3">
@@ -474,8 +509,8 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-              </Stagger>
-              <Stagger index={1}>
+              </motion.div>
+              <motion.div variants={item}>
                 <div className="p-7 rounded-2xl border border-white/[0.06] bg-white/[0.015] h-full hover:border-red-500/10 transition-colors duration-200">
                   <p className="text-[11px] font-medium text-red-400 uppercase tracking-widest mb-5">It does not</p>
                   <ul className="space-y-3">
@@ -491,8 +526,8 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-              </Stagger>
-            </div>
+              </motion.div>
+            </motion.div>
             <FadeIn delay={0.15}>
               <p className="text-center text-white/25 text-xs mt-5">Tone: Calm. Direct. Structured.</p>
             </FadeIn>
@@ -509,22 +544,28 @@ export default function Home() {
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">What You Build in 14 Days</h2>
             </FadeIn>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid grid-cols-2 md:grid-cols-5 gap-3"
+            >
               {[
                 { icon: <BookOpen className="w-5 h-5" />, label: "Digital product" },
-                { icon: <Globe className="w-5 h-5" />, label: "Live landing page" },
-                { icon: <Mail className="w-5 h-5" />, label: "Email sequence" },
+                { icon: <Globe    className="w-5 h-5" />, label: "Live landing page" },
+                { icon: <Mail     className="w-5 h-5" />, label: "Email sequence" },
                 { icon: <BarChart3 className="w-5 h-5" />, label: "Validation proof" },
-                { icon: <Package className="w-5 h-5" />, label: "Launch checklist" },
+                { icon: <Package  className="w-5 h-5" />, label: "Launch checklist" },
               ].map((c, i) => (
-                <Stagger key={i} index={i}>
+                <motion.div key={i} variants={item}>
                   <div className="flex flex-col items-center gap-3 p-5 rounded-xl border border-white/[0.04] bg-white/[0.015] hover:border-blue-500/20 hover:-translate-y-0.5 transition-all duration-200 text-center">
                     <span className="text-blue-400">{c.icon}</span>
                     <span className="text-white/55 text-xs font-medium">{c.label}</span>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -541,23 +582,29 @@ export default function Home() {
                 You have a skill. This system turns it into a product — no coding, no marketing background required.
               </p>
             </FadeIn>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid grid-cols-2 md:grid-cols-5 gap-3"
+            >
               {[
-                { icon: <Briefcase className="w-5 h-5" />, title: "Employee", desc: "Monetize expertise outside your 9–5" },
-                { icon: <GraduationCap className="w-5 h-5" />, title: "Teacher", desc: "Package your knowledge as a digital product" },
-                { icon: <Users className="w-5 h-5" />, title: "Parent", desc: "Build income around a flexible schedule" },
-                { icon: <Trophy className="w-5 h-5" />, title: "Coach", desc: "Scale your methods beyond 1-on-1 sessions" },
-                { icon: <Palette className="w-5 h-5" />, title: "Creative", desc: "Productize your craft and sell it online" },
+                { icon: <Briefcase     className="w-5 h-5" />, title: "Employee", desc: "Monetize expertise outside your 9–5" },
+                { icon: <GraduationCap className="w-5 h-5" />, title: "Teacher",  desc: "Package your knowledge as a digital product" },
+                { icon: <Users         className="w-5 h-5" />, title: "Parent",   desc: "Build income around a flexible schedule" },
+                { icon: <Trophy        className="w-5 h-5" />, title: "Coach",    desc: "Scale your methods beyond 1-on-1 sessions" },
+                { icon: <Palette       className="w-5 h-5" />, title: "Creative", desc: "Productize your craft and sell it online" },
               ].map((c, i) => (
-                <Stagger key={i} index={i}>
+                <motion.div key={i} variants={item}>
                   <div className="flex flex-col items-center gap-3 p-5 rounded-xl border border-white/[0.04] bg-white/[0.015] hover:border-blue-500/20 hover:-translate-y-0.5 transition-all duration-200 text-center h-full">
                     <span className="text-blue-400">{c.icon}</span>
                     <span className="text-white font-medium text-sm">{c.title}</span>
                     <span className="text-white/35 text-xs leading-relaxed">{c.desc}</span>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -571,7 +618,13 @@ export default function Home() {
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">What&apos;s Included</h2>
             </FadeIn>
-            <div className="space-y-1.5 mb-7">
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="space-y-1.5 mb-7"
+            >
               {[
                 "14-Day Roadmap",
                 "Product Profile™ Framework",
@@ -581,17 +634,17 @@ export default function Home() {
                 "Email Sequence Templates",
                 "Launch Checklist",
                 "Lifetime Updates",
-              ].map((item, i) => (
-                <Stagger key={i} index={i}>
+              ].map((t, i) => (
+                <motion.div key={i} variants={item}>
                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.04] bg-white/[0.015] hover:border-blue-500/15 transition-colors duration-200">
                     <div className="w-5 h-5 rounded-md bg-blue-600/10 flex items-center justify-center flex-shrink-0">
                       <Check className="w-3 h-3 text-blue-400" />
                     </div>
-                    <span className="text-white/65 text-sm">{item}</span>
+                    <span className="text-white/65 text-sm">{t}</span>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
             <FadeIn delay={0.1}>
               <p className="text-center text-white/30 text-xs">
                 Works with free ChatGPT, Claude, or Gemini. No additional subscriptions required.
@@ -611,22 +664,28 @@ export default function Home() {
               <p className="text-[11px] font-medium tracking-[0.2em] text-blue-400 uppercase mb-3">Included Free</p>
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">Bonus Resources</h2>
             </FadeIn>
-            <div className="grid sm:grid-cols-2 gap-2.5">
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="grid sm:grid-cols-2 gap-2.5"
+            >
               {[
                 "SEO Starter Guide",
                 "Facebook Ads Starter Blueprint",
                 "Legal Templates Pack",
                 "30-Day Content Calendar",
                 "5 Niche Quick-Start Tracks",
-              ].map((item, i) => (
-                <Stagger key={i} index={i}>
+              ].map((t, i) => (
+                <motion.div key={i} variants={item}>
                   <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.04] bg-white/[0.015]">
                     <span className="w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
-                    <span className="text-white/55 text-sm">{item}</span>
+                    <span className="text-white/55 text-sm">{t}</span>
                   </div>
-                </Stagger>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -655,12 +714,12 @@ export default function Home() {
                   </thead>
                   <tbody>
                     {[
-                      { f: "Structured roadmap",    free: false, course: true,  comm: false, us: true },
-                      { f: "Built-in validation",   free: false, course: false, comm: false, us: true },
-                      { f: "AI prompts included",   free: false, course: false, comm: false, us: true },
-                      { f: "14-day deadline",       free: false, course: false, comm: false, us: true },
-                      { f: "One-time payment",      free: true,  course: true,  comm: false, us: true },
-                      { f: "Beginner-friendly",     free: false, course: true,  comm: true,  us: true },
+                      { f: "Structured roadmap",  free: false, course: true,  comm: false, us: true },
+                      { f: "Built-in validation", free: false, course: false, comm: false, us: true },
+                      { f: "AI prompts included", free: false, course: false, comm: false, us: true },
+                      { f: "14-day deadline",     free: false, course: false, comm: false, us: true },
+                      { f: "One-time payment",    free: true,  course: true,  comm: false, us: true },
+                      { f: "Beginner-friendly",   free: false, course: true,  comm: true,  us: true },
                     ].map((r, i) => (
                       <tr key={i} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.01] transition-colors">
                         <td className="py-3.5 px-5 text-white/50 text-xs">{r.f}</td>
@@ -742,13 +801,11 @@ export default function Home() {
             <FadeIn>
               <div className="rounded-2xl border border-blue-500/15 bg-gradient-to-b from-white/[0.025] to-transparent p-8 text-center overflow-hidden relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-blue-500/25 to-transparent" />
-
                 <div className="mb-7">
                   <p className="text-[11px] font-medium tracking-[0.18em] text-blue-400 uppercase mb-4">One-Time Price</p>
                   <span className="text-6xl font-medium text-white">$49</span>
                   <p className="text-white/35 text-sm mt-2">Lifetime access. No subscription.</p>
                 </div>
-
                 <div className="text-left space-y-2 mb-8">
                   {[
                     "Full 14-Day Launch System",
@@ -764,9 +821,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-
                 <EmailCapture />
-
                 <p className="mt-5 text-[11px] text-white/20">14&#8209;day money&#8209;back guarantee. No questions asked.</p>
               </div>
             </FadeIn>
@@ -786,38 +841,14 @@ export default function Home() {
             <FadeIn delay={0.1}>
               <div>
                 {[
-                  {
-                    q: "Is this a course?",
-                    a: "No. It's a structured execution system. You get daily tasks, AI prompts, and validation checkpoints. You don't move forward until each phase is complete.",
-                  },
-                  {
-                    q: "Do I need ChatGPT Plus?",
-                    a: "No. Works with any AI — free ChatGPT, Claude, Gemini. You use your own tools. We don't sell AI access.",
-                  },
-                  {
-                    q: "Do you guarantee sales?",
-                    a: "No. We guarantee a launched product if you follow the system. Sales depend on your niche, effort, and market. We make zero income claims.",
-                  },
-                  {
-                    q: "What counts as \"launch\"?",
-                    a: "A digital product publicly available for purchase online — Gumroad, Shopify, Etsy, or similar. A live landing page. Not an idea. Not a draft.",
-                  },
-                  {
-                    q: "Do I need to pick a niche before buying?",
-                    a: "No. Day 1 is specifically designed to help you find and validate your niche. You only need a general skill or area of interest.",
-                  },
-                  {
-                    q: "I'm a complete beginner. Can I do this?",
-                    a: "Yes. The system is built for people who have never launched a product. Every step has AI prompts that guide you through it. No technical skills required.",
-                  },
-                  {
-                    q: "What if I don't finish in 14 days?",
-                    a: "You keep lifetime access. The 14-day structure is a constraint to force momentum — not an expiring deadline. The system is designed to be done in 14 days at 1–2 hours per day.",
-                  },
-                  {
-                    q: "When does the product launch?",
-                    a: "Summer 2026. Join the waitlist at the top of this page to be notified the moment it goes live. Early access members are first in.",
-                  },
+                  { q: "Is this a course?",                      a: "No. It's a structured execution system. You get daily tasks, AI prompts, and validation checkpoints. You don't move forward until each phase is complete." },
+                  { q: "Do I need ChatGPT Plus?",                a: "No. Works with any AI — free ChatGPT, Claude, Gemini. You use your own tools. We don't sell AI access." },
+                  { q: "Do you guarantee sales?",                a: "No. We guarantee a launched product if you follow the system. Sales depend on your niche, effort, and market. We make zero income claims." },
+                  { q: "What counts as \"launch\"?",             a: "A digital product publicly available for purchase — Gumroad, Shopify, Etsy, or similar. A live landing page. Not an idea. Not a draft." },
+                  { q: "Do I need to pick a niche first?",       a: "No. Day 1 is specifically designed to help you find and validate your niche. You only need a general skill or area of interest." },
+                  { q: "I'm a complete beginner. Can I do this?", a: "Yes. The system is built for people who have never launched a product. Every step has AI prompts that guide you through it. No technical skills required." },
+                  { q: "What if I don't finish in 14 days?",     a: "You keep lifetime access. The 14-day structure is a constraint to force momentum — not an expiring deadline. Designed for 1–2 hours per day." },
+                  { q: "When does the product launch?",          a: "Summer 2026. Join the waitlist at the top of this page to be notified the moment it goes live. Early access members are first in." },
                 ].map((faq, i) => (
                   <details key={i} className="group border-b border-white/[0.05] py-4 first:border-t first:border-white/[0.05]">
                     <summary className="cursor-pointer flex justify-between items-center text-white/70 font-medium text-sm list-none [&::-webkit-details-marker]:hidden select-none">
