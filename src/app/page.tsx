@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import {
   ArrowRight,
@@ -19,6 +19,11 @@ import {
   Clock,
   MessageSquare,
   Shield,
+  Briefcase,
+  GraduationCap,
+  Users,
+  Trophy,
+  Palette,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────
@@ -95,6 +100,56 @@ const AnimatedBar = () => {
 };
 
 /* ─────────────────────────────────────────────
+   Email Capture
+───────────────────────────────────────────── */
+const EmailCapture = ({ className = "" }: { className?: string }) => {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    if (typeof window !== "undefined") {
+      const existing = JSON.parse(localStorage.getItem("waitlist_emails") || "[]");
+      localStorage.setItem("waitlist_emails", JSON.stringify([...existing, email]));
+    }
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className={`text-center ${className}`}>
+        <p className="text-green-400 font-medium text-sm">You&apos;re on the list! We&apos;ll notify you at launch.</p>
+        <p className="text-white/30 text-xs mt-2">Launching Summer 2026</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className={`flex flex-col items-center gap-3 ${className}`}>
+      <p className="text-xs text-blue-400 font-medium tracking-[0.15em] uppercase">Launching Summer 2026</p>
+      <div className="flex flex-col sm:flex-row gap-2 w-full max-w-sm">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="your@email.com"
+          required
+          className="flex-1 px-4 py-3 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white placeholder-white/30 text-sm focus:outline-none focus:border-blue-500/50 transition-colors"
+        />
+        <button
+          type="submit"
+          className="px-5 py-3 bg-[#2563EB] hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] text-white font-medium rounded-xl text-sm transition-all duration-200 whitespace-nowrap"
+        >
+          Get notified at launch
+        </button>
+      </div>
+      <p className="text-xs text-white/30">No spam. Just the launch announcement.</p>
+    </form>
+  );
+};
+
+/* ─────────────────────────────────────────────
    MAIN PAGE
 ───────────────────────────────────────────── */
 export default function Home() {
@@ -120,8 +175,8 @@ export default function Home() {
           <div className="flex items-center gap-6">
             <a href="#engine" className="text-sm text-white/50 hover:text-white transition-colors hidden sm:block">How it works</a>
             <a href="#pricing" className="text-sm text-white/50 hover:text-white transition-colors hidden sm:block">Pricing</a>
-            <a href="#pricing" className="text-sm font-medium bg-white text-black px-5 py-2 rounded-xl hover:bg-zinc-200 transition-colors">
-              Get Started
+            <a href="#waitlist" className="text-sm font-medium bg-white text-black px-5 py-2 rounded-xl hover:bg-zinc-200 transition-colors">
+              Join Waitlist
             </a>
           </div>
         </div>
@@ -131,7 +186,7 @@ export default function Home() {
         {/* ══════════════════════════════════════
             1. HERO
         ══════════════════════════════════════ */}
-        <motion.section ref={heroRef} style={{ opacity: heroOpacity, scale: heroScale }} className="relative pt-32 pb-24 px-6 overflow-hidden min-h-[88vh] flex items-center">
+        <motion.section id="waitlist" ref={heroRef} style={{ opacity: heroOpacity, scale: heroScale }} className="relative pt-32 pb-24 px-6 overflow-hidden min-h-[88vh] flex items-center">
           <motion.div
             className="pointer-events-none absolute top-[15%] left-[8%] w-[500px] h-[500px] rounded-full bg-blue-600/[0.05] blur-[140px]"
             animate={{ x: [0, 4, -3, 0], y: [0, -3, 4, 0] }}
@@ -170,7 +225,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.55 }}
               className="text-sm text-white/40 max-w-xl mx-auto mb-4 leading-relaxed"
             >
-              A structured 3&#8209;phase launch system with built&#8209;in validation, daily prompts, and a clear roadmap.
+              Launching Summer 2026. Join the early access list.
             </motion.p>
 
             <motion.p
@@ -182,12 +237,8 @@ export default function Home() {
               Not a course. Not a SaaS tool. A focused execution engine for beginners who want to finish.
             </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.75 }} className="flex flex-col items-center gap-4">
-              <a href="#pricing" className="cta-pulse group inline-flex items-center gap-2.5 bg-[#2563EB] hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(37,99,235,0.3)] text-white font-medium px-8 py-4 rounded-xl transition-all duration-200 text-base">
-                Start Your 14&#8209;Day Build
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-              <p className="text-xs text-white/30">14&#8209;day money&#8209;back guarantee. No income promises.</p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.75 }}>
+              <EmailCapture />
             </motion.div>
           </div>
         </motion.section>
@@ -365,75 +416,53 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════
-            INSIDE THE SYSTEM — LIVE PREVIEW
+            BUILDING IN PUBLIC
         ══════════════════════════════════════ */}
         <section className="py-16 px-6 border-t border-white/5">
           <div className="max-w-3xl mx-auto">
             <FadeIn>
-              <p className="text-xs text-white/30 text-center mb-3">Updated January 2026 · Supports latest AI tools</p>
-              <h2 className="text-3xl md:text-4xl font-medium tracking-tight mb-3 text-center">Inside the System — Live Preview</h2>
-              <p className="text-white/50 text-center mb-12 text-sm">This is what you see immediately after purchase.</p>
+              <p className="text-xs font-medium tracking-[0.2em] text-blue-400 uppercase mb-4 text-center">Transparency</p>
+              <h2 className="text-3xl md:text-4xl font-medium tracking-tight mb-4 text-center">Building in Public</h2>
+              <p className="text-white/50 text-center mb-12 text-sm">No hype. Here&apos;s exactly where we are.</p>
             </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-7 hover:border-blue-500/30 hover:-translate-y-[3px] hover:shadow-lg hover:shadow-black/20 transition-all duration-200">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
-                  <div className="flex-1">
-                    <p className="text-sm text-white/70 font-medium mb-2">Your 14-Day Launch Journey</p>
-                    <AnimatedBar />
-                    <p className="text-xs text-white/30 mt-1.5">0% complete</p>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] self-start">
-                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="text-xs text-white/40">AI Coach: Online</span>
-                  </div>
-                </div>
-
-                <div className="space-y-0">
-                  <div className="flex items-center justify-between py-4 border-b border-white/5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-blue-600/15 border border-blue-500/20 flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-blue-400">1</span>
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                {
+                  title: "Landing Page",
+                  status: "Live",
+                  statusClass: "text-green-400 bg-green-400/10 border-green-400/20",
+                  desc: "You're reading it right now.",
+                  icon: <Globe className="w-5 h-5 text-blue-400" />,
+                },
+                {
+                  title: "AI Coach",
+                  status: "In Progress",
+                  statusClass: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
+                  desc: "Prompt library and daily system in development.",
+                  icon: <Zap className="w-5 h-5 text-blue-400" />,
+                },
+                {
+                  title: "Launch",
+                  status: "Summer 2026",
+                  statusClass: "text-blue-400 bg-blue-400/10 border-blue-400/20",
+                  desc: "Full product releases Summer 2026.",
+                  icon: <Rocket className="w-5 h-5 text-blue-400" />,
+                },
+              ].map((item, i) => (
+                <StaggerItem key={i} index={i}>
+                  <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-blue-500/30 hover:-translate-y-[3px] hover:shadow-lg hover:shadow-black/20 transition-all duration-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
+                        {item.icon}
                       </div>
-                      <div>
-                        <p className="text-sm text-white font-medium">Product Profile™</p>
-                        <p className="text-xs text-white/30">15 minutes</p>
-                      </div>
+                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${item.statusClass}`}>{item.status}</span>
                     </div>
-                    <span className="text-xs font-medium text-green-400 px-2 py-0.5 rounded-full bg-green-400/10 border border-green-400/20">Ready</span>
+                    <h3 className="text-white font-medium mb-2">{item.title}</h3>
+                    <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
                   </div>
-                  <div className="flex items-center justify-between py-4 border-b border-white/5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-white/30">2</span>
-                      </div>
-                      <p className="text-sm text-white/40 font-medium">Market Proof Score™</p>
-                    </div>
-                    <span className="text-xs font-medium text-white/30 px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.06]">Locked</span>
-                  </div>
-                  <div className="flex items-center justify-between py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-white/30">3–14</span>
-                      </div>
-                      <p className="text-sm text-white/40 font-medium">Build &amp; Launch</p>
-                    </div>
-                    <span className="text-xs font-medium text-white/20 px-2 py-0.5 rounded-full bg-white/[0.02] border border-white/[0.04]">Upcoming</span>
-                  </div>
-                </div>
-
-                <div className="mt-7 text-center">
-                  <a href="#pricing" className="inline-flex items-center gap-2 bg-[#2563EB] hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(37,99,235,0.3)] text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 text-sm">
-                    Start Your 14-Day Build
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.15}>
-              <p className="text-center text-white/25 text-xs mt-6">Lifetime updates included. System evolves as AI tools evolve.</p>
-            </FadeIn>
+                </StaggerItem>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -515,6 +544,37 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════
+            PERSONAS
+        ══════════════════════════════════════ */}
+        <section className="py-16 px-6 border-t border-white/5">
+          <div className="max-w-5xl mx-auto">
+            <FadeIn>
+              <h2 className="text-3xl md:text-4xl font-medium tracking-tight mb-4 text-center">Who This Is For</h2>
+              <p className="text-white/50 text-center mb-12 text-sm max-w-lg mx-auto">
+                One Product AI is built for people who have a skill and want to turn it into income — without being a developer or marketer.
+              </p>
+            </FadeIn>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              {[
+                { icon: <Briefcase className="w-5 h-5" />, title: "Employee", desc: "Monetize your expertise outside your 9–5" },
+                { icon: <GraduationCap className="w-5 h-5" />, title: "Teacher", desc: "Turn your curriculum into a digital product" },
+                { icon: <Users className="w-5 h-5" />, title: "Parent", desc: "Build income on a flexible schedule" },
+                { icon: <Trophy className="w-5 h-5" />, title: "Coach", desc: "Package your methods and sell at scale" },
+                { icon: <Palette className="w-5 h-5" />, title: "Creative", desc: "Productize your craft or creative skill" },
+              ].map((item, i) => (
+                <StaggerItem key={i} index={i}>
+                  <div className="flex flex-col items-center gap-3 p-5 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:border-blue-500/20 hover:-translate-y-[3px] hover:shadow-lg hover:shadow-black/20 transition-all duration-200 text-center h-full">
+                    <div className="text-blue-400">{item.icon}</div>
+                    <span className="text-white font-medium text-sm">{item.title}</span>
+                    <span className="text-white/40 text-xs leading-relaxed">{item.desc}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════
             8. WHAT'S INCLUDED
         ══════════════════════════════════════ */}
         <section className="py-16 px-6 border-t border-white/5">
@@ -574,6 +634,51 @@ export default function Home() {
                 </StaggerItem>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════
+            COMPARISON
+        ══════════════════════════════════════ */}
+        <section className="py-16 px-6 border-t border-white/5">
+          <div className="max-w-4xl mx-auto">
+            <FadeIn>
+              <h2 className="text-3xl md:text-4xl font-medium tracking-tight mb-4 text-center">How We Compare</h2>
+              <p className="text-white/50 text-center mb-12 text-sm">Not everything that looks like a solution is one.</p>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div className="overflow-x-auto rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/[0.06]">
+                      <th className="text-left py-4 px-5 text-white/30 font-normal text-xs">Feature</th>
+                      <th className="py-4 px-4 text-white/30 font-normal text-xs text-center">Free AI</th>
+                      <th className="py-4 px-4 text-white/30 font-normal text-xs text-center">Courses</th>
+                      <th className="py-4 px-4 text-white/30 font-normal text-xs text-center">Communities</th>
+                      <th className="py-4 px-4 text-blue-400 font-medium text-xs text-center">One Product AI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { feature: "Structured roadmap", free: false, courses: true, communities: false, us: true },
+                      { feature: "Built-in validation", free: false, courses: false, communities: false, us: true },
+                      { feature: "AI prompts included", free: false, courses: false, communities: false, us: true },
+                      { feature: "14-day deadline", free: false, courses: false, communities: false, us: true },
+                      { feature: "One-time payment", free: true, courses: true, communities: false, us: true },
+                      { feature: "Beginner friendly", free: false, courses: true, communities: true, us: true },
+                    ].map((row, i) => (
+                      <tr key={i} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.01] transition-colors">
+                        <td className="py-3.5 px-5 text-white/60">{row.feature}</td>
+                        <td className="py-3.5 px-4 text-center">{row.free ? <Check className="w-4 h-4 text-green-400 mx-auto" /> : <X className="w-4 h-4 text-white/20 mx-auto" />}</td>
+                        <td className="py-3.5 px-4 text-center">{row.courses ? <Check className="w-4 h-4 text-green-400 mx-auto" /> : <X className="w-4 h-4 text-white/20 mx-auto" />}</td>
+                        <td className="py-3.5 px-4 text-center">{row.communities ? <Check className="w-4 h-4 text-green-400 mx-auto" /> : <X className="w-4 h-4 text-white/20 mx-auto" />}</td>
+                        <td className="py-3.5 px-4 text-center">{row.us ? <Check className="w-4 h-4 text-blue-400 mx-auto" /> : <X className="w-4 h-4 text-white/20 mx-auto" />}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </FadeIn>
           </div>
         </section>
 
@@ -650,10 +755,7 @@ export default function Home() {
                   ))}
                 </div>
 
-                <a href="#" className="cta-pulse group block w-full text-center bg-[#2563EB] hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(37,99,235,0.3)] text-white font-medium py-3.5 rounded-xl transition-all duration-200 text-sm">
-                  Start Your 14&#8209;Day Build
-                  <ArrowRight className="inline w-3.5 h-3.5 ml-2 group-hover:translate-x-0.5 transition-transform" />
-                </a>
+                <EmailCapture />
 
                 <p className="mt-4 text-xs text-white/25">14&#8209;day money&#8209;back guarantee. No questions.</p>
               </div>
@@ -676,6 +778,10 @@ export default function Home() {
                   { q: "Do I need ChatGPT Plus?", a: "No. Works with any AI — free ChatGPT, Claude, Gemini. You use your own tools. We don't sell AI access." },
                   { q: "Do you guarantee sales?", a: "No. We guarantee a launched product if you follow the system. Sales depend on your niche, effort, and market. We make zero income claims." },
                   { q: "What counts as \"launch\"?", a: "A digital product publicly available online (Gumroad, Shopify, Etsy) with a live landing page. Not an idea. Not a draft. Live and available for purchase." },
+                  { q: "Do I need to pick a niche before I buy?", a: "No. Day 1 is specifically designed to help you find and validate your niche. You only need a general skill or interest — the system helps you narrow it into a viable product direction." },
+                  { q: "I'm a complete beginner. Can I do this?", a: "Yes. The system is built for people who have never launched a product before. Every step is broken down with AI prompts that guide you. No coding, no design skills, no marketing background required." },
+                  { q: "What if I don't finish in 14 days?", a: "You keep lifetime access. The 14-day structure is a constraint to force momentum — not a deadline that expires. That said, the system is designed to be completed in 14 days at 1–2 hours per day." },
+                  { q: "When does the product launch?", a: "Summer 2026. Join the waitlist at the top of this page to be notified the moment it goes live. Early access members will be first in." },
                 ].map((item, i) => (
                   <details key={i} className="group border-b border-white/[0.06] py-4">
                     <summary className="cursor-pointer flex justify-between items-center text-white/80 font-medium text-sm list-none [&::-webkit-details-marker]:hidden">
@@ -697,16 +803,13 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center">
             <FadeIn>
               <h2 className="text-3xl md:text-4xl font-medium tracking-tight mb-8">In 14 days, you&apos;ll either:</h2>
-              <div className="space-y-3 mb-8">
+              <div className="space-y-3 mb-10">
                 <p className="text-white/60 text-base">Have a product live online</p>
                 <p className="text-white/20 text-xs">or</p>
                 <p className="text-white/60 text-base">Have your money back</p>
               </div>
-              <p className="text-white/30 text-sm mb-8">Either way, you stop guessing.</p>
-              <a href="#pricing" className="cta-pulse group inline-flex items-center gap-2.5 bg-[#2563EB] hover:bg-blue-500 hover:shadow-[0_0_25px_rgba(37,99,235,0.3)] text-white font-medium px-8 py-4 rounded-xl transition-all duration-200 text-sm">
-                Start Your 14&#8209;Day Build
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </a>
+              <p className="text-white/30 text-sm mb-10">Either way, you stop guessing.</p>
+              <EmailCapture />
             </FadeIn>
           </div>
         </section>
