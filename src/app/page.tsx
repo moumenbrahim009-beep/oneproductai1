@@ -61,6 +61,11 @@ const FadeIn = ({
   </motion.div>
 );
 
+/* ─── Section number (monospace) ─── */
+const SectionNum = ({ n }: { n: string }) => (
+  <p className="font-mono text-[10px] text-white/20 tracking-[0.25em] mb-2">{n}</p>
+);
+
 /* ─── Section label pill ─── */
 const Label = ({ children }: { children: React.ReactNode }) => (
   <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/[0.08] border border-blue-500/[0.14] text-[11px] font-medium tracking-[0.18em] text-blue-400 uppercase mb-4">
@@ -68,7 +73,7 @@ const Label = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-/* ─── Progress bar (animates once in view) ─── */
+/* ─── Progress line ─── */
 const ProgressLine = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -84,7 +89,7 @@ const ProgressLine = () => {
   );
 };
 
-/* ─── Notion progress bar (25%, once in view) ─── */
+/* ─── Notion progress bar ─── */
 const NotionProgressBar = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -104,6 +109,9 @@ const NotionProgressBar = () => {
 const CardHighlight = () => (
   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
 );
+
+/* ─── Divider ─── */
+const Divider = () => <div className="border-t border-white/[0.05]" />;
 
 /* ─── Email capture ─── */
 const EmailCapture = ({ className = "" }: { className?: string }) => {
@@ -156,9 +164,6 @@ const EmailCapture = ({ className = "" }: { className?: string }) => {
   );
 };
 
-/* ─── Divider ─── */
-const Divider = () => <div className="border-t border-white/[0.05]" />;
-
 /* ════════════════════════════════════════
    PAGE
 ════════════════════════════════════════ */
@@ -179,7 +184,6 @@ export default function Home() {
           backgroundSize: "128px 128px",
         }}
       />
-
       {/* Global vignette */}
       <div
         className="pointer-events-none fixed inset-0 z-[2]"
@@ -220,9 +224,8 @@ export default function Home() {
           id="waitlist"
           ref={heroRef}
           style={{ opacity: heroOpacity, scale: heroScale }}
-          className="relative pt-36 pb-28 px-6 min-h-[90vh] flex items-center overflow-hidden"
+          className="relative pt-36 pb-24 px-6 min-h-[90vh] flex items-center overflow-hidden"
         >
-          {/* Dot grid */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
@@ -232,12 +235,10 @@ export default function Home() {
               WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 20%, black 30%, transparent 75%)",
             }}
           />
-          {/* Spotlight */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 70% 55% at 50% -5%, rgba(37,99,235,0.18) 0%, transparent 65%)" }}
           />
-          {/* Breathing glow */}
           <motion.div
             className="pointer-events-none absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-blue-600/[0.06] blur-[160px]"
             animate={{ opacity: [0.15, 0.25, 0.15], scale: [1, 1.05, 1] }}
@@ -304,7 +305,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             PROBLEM
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-2xl mx-auto text-center">
             <FadeIn>
               <div className="grid grid-cols-3 gap-6 max-w-xs mx-auto mb-10">
@@ -338,16 +339,16 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            THE ENGINE
+            01 — THE ENGINE
         ════════════════════════════════════════ */}
-        <section id="engine" className="py-20 px-6 relative">
+        <section id="engine" className="py-16 px-6 relative">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.07), transparent 70%)" }}
           />
           <div className="max-w-5xl mx-auto relative">
             <FadeIn className="text-center mb-12">
-              <Label>Proprietary System</Label>
+              <SectionNum n="01" />
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">
                 The One Product Launch Engine™
               </h2>
@@ -369,11 +370,11 @@ export default function Home() {
                 { phase: "Phase 3", days: "Days 5–14", title: "Build & Launch",      sub: "Execution before perfection.", icon: <Rocket     className="w-4 h-4 text-blue-400" /> },
               ].map((c, i) => (
                 <motion.div key={i} variants={item}>
-                  <div className="relative h-full p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02] hover:border-blue-500/25 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-200 overflow-hidden">
+                  <div className="relative h-full p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02] hover:border-blue-500/25 hover:-translate-y-1 transition-all duration-200 overflow-hidden">
                     <CardHighlight />
                     <div className="flex items-center gap-2.5 mb-5">
-                      <span className="text-[10px] uppercase tracking-widest text-blue-400 font-medium">{c.phase}</span>
-                      <span className="text-[10px] text-white/20">{c.days}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-blue-400">{c.phase}</span>
+                      <span className="font-mono text-[10px] text-white/20">{c.days}</span>
                     </div>
                     <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center mb-4">
                       {c.icon}
@@ -390,11 +391,12 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            TIMELINE
+            02 — TIMELINE
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-2xl mx-auto">
             <FadeIn className="text-center mb-10">
+              <SectionNum n="02" />
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">Your 14&#8209;Day Map</h2>
             </FadeIn>
             <motion.div
@@ -413,7 +415,7 @@ export default function Home() {
               ].map((r, i) => (
                 <motion.div key={i} variants={item}>
                   <div className="flex items-center gap-5 px-5 py-3.5 rounded-xl border border-white/[0.05] bg-white/[0.015] hover:border-blue-500/20 hover:bg-white/[0.025] hover:-translate-y-0.5 transition-all duration-200">
-                    <span className="w-20 flex-shrink-0 text-xs font-mono text-blue-400">{r.days}</span>
+                    <span className="w-20 flex-shrink-0 font-mono text-xs text-blue-400">{r.days}</span>
                     <span className="text-sm font-medium text-white/85 w-24 flex-shrink-0">{r.task}</span>
                     <span className="text-sm text-white/30">{r.desc}</span>
                   </div>
@@ -421,7 +423,7 @@ export default function Home() {
               ))}
             </motion.div>
             <FadeIn delay={0.2}>
-              <div className="mt-7 flex flex-wrap justify-center gap-6 text-xs text-white/30">
+              <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-white/30">
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-blue-400/70" />~17 hours total</span>
                 <span className="flex items-center gap-1.5"><Zap   className="w-3.5 h-3.5 text-blue-400/70" />1–2 hours per day</span>
               </div>
@@ -432,21 +434,20 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            SYSTEM PREVIEW — video + notion card
+            03 — SYSTEM PREVIEW
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6 relative">
+        <section className="py-16 px-6 relative">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.05), transparent 70%)" }}
           />
           <div className="max-w-5xl mx-auto relative">
             <FadeIn className="text-center mb-10">
-              <Label>Live Preview</Label>
+              <SectionNum n="03" />
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">See Day 1 in Action</h2>
               <p className="text-white/35 text-sm">15 minutes. 3 questions. Your first product direction.</p>
             </FadeIn>
 
-            {/* Two columns — terminal above notion on mobile */}
             <motion.div
               variants={container}
               initial="hidden"
@@ -454,11 +455,10 @@ export default function Home() {
               viewport={{ once: true, margin: "-40px" }}
               className="grid md:grid-cols-2 gap-5 mb-12"
             >
-              {/* ── Left: video placeholder ── */}
+              {/* Video placeholder */}
               <motion.div variants={item}>
                 <div className="relative rounded-2xl bg-black border border-white/[0.07] overflow-hidden aspect-video flex items-center justify-center">
                   <CardHighlight />
-                  {/* Subtle inner glow */}
                   <div
                     className="pointer-events-none absolute inset-0"
                     style={{ background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(37,99,235,0.07), transparent 70%)" }}
@@ -467,36 +467,33 @@ export default function Home() {
                     <div className="w-14 h-14 rounded-full bg-white/[0.05] border border-white/[0.1] flex items-center justify-center">
                       <Play className="w-5 h-5 text-white/40 ml-0.5" />
                     </div>
-                    <p className="text-white/25 text-xs tracking-wide">AI Coach Demo (Coming Soon)</p>
+                    <p className="font-mono text-white/20 text-xs tracking-wide">AI Coach Demo (Coming Soon)</p>
                   </div>
                 </div>
               </motion.div>
 
-              {/* ── Right: Notion-style checklist ── */}
+              {/* Notion-style card */}
               <motion.div variants={item}>
-                <div className="relative rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 shadow-[0_4px_32px_rgba(0,0,0,0.35)] overflow-hidden h-full">
+                <div className="relative rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.25)] overflow-hidden h-full">
                   <CardHighlight />
 
-                  {/* Progress bar */}
                   <div className="mb-5">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] text-white/25">Progress</span>
-                      <span className="text-[11px] text-blue-400/70">25%</span>
+                      <span className="font-mono text-[10px] text-white/20 tracking-widest">PROGRESS</span>
+                      <span className="font-mono text-[10px] text-blue-400/60">25%</span>
                     </div>
                     <NotionProgressBar />
                   </div>
 
-                  {/* Header + badge */}
-                  <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center justify-between mb-6">
                     <h3 className="text-white/85 font-medium text-sm">Day 1 — Product Profile™</h3>
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-green-400 bg-green-400/[0.07] border border-green-400/20 px-2.5 py-1 rounded-full">
+                    <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-green-400 bg-green-400/[0.07] border border-green-400/20 px-2.5 py-1 rounded-full">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                       AI Coach Active
                     </span>
                   </div>
 
-                  {/* Checklist */}
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     {[
                       { done: true,  label: "Define target audience" },
                       { done: true,  label: "Identify core pain" },
@@ -506,33 +503,25 @@ export default function Home() {
                       <div key={i} className="flex items-center gap-3">
                         <div
                           className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
-                            row.done
-                              ? "bg-blue-500 border border-blue-500"
-                              : "bg-transparent border border-white/[0.15]"
+                            row.done ? "bg-blue-500 border border-blue-500" : "bg-transparent border border-white/[0.15]"
                           }`}
                         >
                           {row.done && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
                         </div>
-                        <span
-                          className={`text-sm transition-colors ${
-                            row.done ? "text-white/30 line-through decoration-white/20" : "text-white/65"
-                          }`}
-                        >
+                        <span className={`text-sm ${row.done ? "text-white/30 line-through decoration-white/20" : "text-white/65"}`}>
                           {row.label}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Bottom hint */}
-                  <p className="text-[11px] text-white/20 mt-5 pt-4 border-t border-white/[0.05]">
-                    Next: Run Market Proof Score™ →
-                  </p>
+                  <div className="mt-5 pt-4 border-t border-white/[0.05]">
+                    <p className="font-mono text-[10px] text-white/20">NEXT → Run Market Proof Score™</p>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Bottom CTA */}
             <FadeIn delay={0.15} className="flex justify-center">
               <EmailCapture />
             </FadeIn>
@@ -542,12 +531,12 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            BUILDING IN PUBLIC
+            04 — BUILDING IN PUBLIC
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-3xl mx-auto">
             <FadeIn className="text-center mb-10">
-              <Label>Transparency</Label>
+              <SectionNum n="04" />
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">Building in Public</h2>
               <p className="text-white/35 text-sm">No launch-day surprises. Here&apos;s exactly where we are.</p>
             </FadeIn>
@@ -564,13 +553,13 @@ export default function Home() {
                 { title: "Launch",       status: "Summer 2026", sc: "text-blue-400 bg-blue-400/[0.07] border-blue-400/20",       desc: "Full product releases Summer 2026.",               icon: <Rocket className="w-4 h-4 text-blue-400" /> },
               ].map((c, i) => (
                 <motion.div key={i} variants={item}>
-                  <div className="relative p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02] hover:border-blue-500/25 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-200 overflow-hidden">
+                  <div className="relative p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02] hover:border-blue-500/25 hover:-translate-y-1 transition-all duration-200 overflow-hidden">
                     <CardHighlight />
                     <div className="flex items-start justify-between mb-4">
                       <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center">
                         {c.icon}
                       </div>
-                      <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border ${c.sc}`}>{c.status}</span>
+                      <span className={`font-mono text-[10px] font-medium px-2.5 py-1 rounded-full border ${c.sc}`}>{c.status}</span>
                     </div>
                     <p className="text-white/85 font-medium text-sm mb-1.5">{c.title}</p>
                     <p className="text-white/30 text-xs leading-relaxed">{c.desc}</p>
@@ -584,11 +573,12 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            AI COACH
+            05 — AI COACH
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-4xl mx-auto">
             <FadeIn className="text-center mb-10">
+              <SectionNum n="05" />
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">Your AI Execution Coach</h2>
             </FadeIn>
             <motion.div
@@ -601,7 +591,7 @@ export default function Home() {
               <motion.div variants={item}>
                 <div className="relative p-7 rounded-2xl border border-white/[0.07] bg-white/[0.02] h-full hover:border-green-500/20 transition-colors duration-200 overflow-hidden">
                   <CardHighlight />
-                  <p className="text-[11px] font-medium text-green-400 uppercase tracking-widest mb-5">It does</p>
+                  <p className="font-mono text-[10px] text-green-400 uppercase tracking-widest mb-5">It does</p>
                   <ul className="space-y-3">
                     {[
                       "Breaks every task into daily, actionable steps",
@@ -619,7 +609,7 @@ export default function Home() {
               <motion.div variants={item}>
                 <div className="relative p-7 rounded-2xl border border-white/[0.07] bg-white/[0.02] h-full hover:border-red-500/15 transition-colors duration-200 overflow-hidden">
                   <CardHighlight />
-                  <p className="text-[11px] font-medium text-red-400 uppercase tracking-widest mb-5">It does not</p>
+                  <p className="font-mono text-[10px] text-red-400 uppercase tracking-widest mb-5">It does not</p>
                   <ul className="space-y-3">
                     {[
                       "Promise income or make revenue projections",
@@ -636,7 +626,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
             <FadeIn delay={0.15}>
-              <p className="text-center text-white/20 text-xs mt-5">Tone: Calm. Direct. Structured.</p>
+              <p className="text-center font-mono text-[10px] text-white/20 tracking-widest mt-5 uppercase">Tone: Calm. Direct. Structured.</p>
             </FadeIn>
           </div>
         </section>
@@ -644,11 +634,12 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            WHAT YOU BUILD
+            06 — WHAT YOU BUILD
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-4xl mx-auto">
             <FadeIn className="text-center mb-10">
+              <SectionNum n="06" />
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">What You Build in 14 Days</h2>
             </FadeIn>
             <motion.div
@@ -682,7 +673,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             PERSONAS
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-5xl mx-auto">
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">Who This Is For</h2>
@@ -722,7 +713,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             WHAT'S INCLUDED
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-xl mx-auto">
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">What&apos;s Included</h2>
@@ -767,7 +758,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             BONUSES
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-xl mx-auto">
             <FadeIn className="text-center mb-10">
               <Label>Included Free</Label>
@@ -803,7 +794,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             COMPARISON
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-4xl mx-auto">
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-3">How We Compare</h2>
@@ -855,7 +846,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             WHY $49
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-xl mx-auto text-center">
             <FadeIn>
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight mb-7">Why $49?</h2>
@@ -871,30 +862,61 @@ export default function Home() {
         <Divider />
 
         {/* ════════════════════════════════════════
-            TRUST
+            07 — SYSTEM AUTHORITY
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-2xl mx-auto">
             <FadeIn>
-              <div className="relative p-8 rounded-2xl border border-white/[0.07] bg-white/[0.015] overflow-hidden">
-                <CardHighlight />
-                <div className="flex flex-col sm:flex-row gap-6 items-start">
-                  <div className="w-11 h-11 rounded-xl bg-blue-600/[0.1] border border-blue-500/[0.15] flex items-center justify-center flex-shrink-0">
-                    <span className="text-blue-400 font-bold text-xs">BM</span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-medium text-white/85 mb-4">BM Digital LLC</h3>
-                    <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-xs text-white/30">
-                      {["US-registered company", "No affiliations", "No hidden upsells", "Real refund policy", "Real support email", "Transparent pricing"].map((t, i) => (
-                        <span key={i} className="flex items-center gap-2">
-                          <Check className="w-3 h-3 text-blue-400/70 flex-shrink-0" />{t}
-                        </span>
-                      ))}
+              {/* Visual section divider */}
+              <div className="flex items-center gap-4 mb-10">
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent to-white/[0.06]" />
+                <span className="font-mono text-[10px] text-white/20 tracking-[0.3em]">07</span>
+                <div className="flex-1 h-px bg-gradient-to-l from-transparent to-white/[0.06]" />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-10">
+                <div>
+                  <h2 className="text-xl font-medium tracking-tight text-white/85 mb-6">System Authority</h2>
+                  <div className="space-y-5">
+                    <div>
+                      <p className="font-mono text-[10px] text-white/25 tracking-[0.2em] uppercase mb-1">Entity</p>
+                      <p className="text-white/70 text-sm">BM Digital LLC</p>
                     </div>
-                    <p className="text-white/20 text-xs mt-4">
-                      Contact: <a href="mailto:hello@oneproductai.com" className="text-blue-400/70 hover:text-blue-300 transition-colors">hello@oneproductai.com</a>
-                    </p>
+                    <div>
+                      <p className="font-mono text-[10px] text-white/25 tracking-[0.2em] uppercase mb-1">Registration</p>
+                      <p className="text-white/70 text-sm">US-registered company</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[10px] text-white/25 tracking-[0.2em] uppercase mb-1">Structure</p>
+                      <p className="text-white/70 text-sm">Independent. No partnerships. No affiliate funnels.</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[10px] text-white/25 tracking-[0.2em] uppercase mb-1">Contact</p>
+                      <a
+                        href="mailto:hello@oneproductai.com"
+                        className="font-mono text-sm text-blue-400/70 hover:text-blue-300 transition-colors"
+                      >
+                        hello@oneproductai.com
+                      </a>
+                    </div>
                   </div>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="font-mono text-[10px] text-white/25 tracking-[0.2em] uppercase mb-4">Verified</p>
+                  {[
+                    "No hidden upsells",
+                    "No income claims",
+                    "No affiliate funnels",
+                    "Real refund policy",
+                    "Real support email",
+                    "Transparent pricing",
+                  ].map((t, i) => (
+                    <div key={i} className="flex items-center gap-2.5 text-sm text-white/40">
+                      <Check className="w-3 h-3 text-blue-400/60 flex-shrink-0" />
+                      {t}
+                    </div>
+                  ))}
                 </div>
               </div>
             </FadeIn>
@@ -906,7 +928,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             PRICING
         ════════════════════════════════════════ */}
-        <section id="pricing" className="py-20 px-6 relative">
+        <section id="pricing" className="py-16 px-6 relative">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 55% 45% at 50% 100%, rgba(37,99,235,0.1), transparent 70%)" }}
@@ -960,7 +982,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             FAQ
         ════════════════════════════════════════ */}
-        <section className="py-20 px-6">
+        <section className="py-16 px-6">
           <div className="max-w-xl mx-auto">
             <FadeIn className="text-center mb-10">
               <h2 className="text-3xl md:text-[2.25rem] font-medium tracking-tight">FAQ</h2>
@@ -995,7 +1017,7 @@ export default function Home() {
         {/* ════════════════════════════════════════
             CLOSE
         ════════════════════════════════════════ */}
-        <section className="py-24 px-6 relative">
+        <section className="py-16 px-6 relative">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "radial-gradient(ellipse 60% 70% at 50% 50%, rgba(37,99,235,0.07), transparent 70%)" }}
