@@ -7,7 +7,7 @@ import { Rocket } from "lucide-react";
 /* ─── Variants ─── */
 const fade = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.75, ease: "easeOut" } },
+  show: { opacity: 1, transition: { duration: 0.75, ease: "easeOut" as const } },
 };
 
 const stagger = {
@@ -28,31 +28,50 @@ const L = ({
   </motion.p>
 );
 
-/* ─── Spacer (not a stagger child) ─── */
+/* ─── Spacer ─── */
 const Sp = ({ size = "h-6" }: { size?: string }) => (
   <div className={size} aria-hidden />
+);
+
+/* ─── In-screen rule ─── */
+const Rule = () => (
+  <div className="w-6 h-px bg-white/[0.08] mx-auto my-8" aria-hidden />
+);
+
+/* ─── Between-screen divider ─── */
+const Divider = () => (
+  <div className="flex justify-center px-6">
+    <div className="w-full max-w-4xl border-t border-white/10" />
+  </div>
 );
 
 /* ─── Screen ─── */
 const Screen = ({
   id = "",
   bg = "bg-[#09090f]",
+  num = "",
   children,
 }: {
   id?: string;
   bg?: string;
+  num?: string;
   children: React.ReactNode;
 }) => (
   <section
     id={id}
-    className={`relative min-h-screen flex flex-col items-center justify-center px-6 py-24 ${bg}`}
+    className={`relative min-h-screen flex flex-col items-center justify-center px-6 py-20 ${bg}`}
   >
+    {num && (
+      <span className="absolute top-7 left-6 sm:left-8 font-mono text-[10px] text-white/18 tracking-[0.3em] select-none">
+        {num}
+      </span>
+    )}
     <motion.div
       variants={stagger}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
-      className="w-full max-w-lg text-center"
+      className="w-full max-w-2xl text-center"
     >
       {children}
     </motion.div>
@@ -143,7 +162,7 @@ export default function Home() {
       <main>
 
         {/* ════════ 01 ════════ */}
-        <Screen id="top" bg="bg-[#09090f]">
+        <Screen id="top" bg="bg-[#09090f]" num="01">
           <L className="text-3xl sm:text-4xl font-medium text-white/85 leading-tight">
             Most people never ship.
           </L>
@@ -155,8 +174,10 @@ export default function Home() {
           <L className="text-lg sm:text-xl text-white/18">Nothing ships.</L>
         </Screen>
 
+        <Divider />
+
         {/* ════════ 02 ════════ */}
-        <Screen bg="bg-[#0e1014]">
+        <Screen bg="bg-[#0e1014]" num="02">
           <L className="text-lg sm:text-xl text-white/38">Not because they lack intelligence.</L>
           <L className="text-lg sm:text-xl text-white/38">Not because they lack ambition.</L>
           <Sp size="h-8" />
@@ -169,8 +190,10 @@ export default function Home() {
           <L className="text-base text-white/22">Random outcomes.</L>
         </Screen>
 
+        <Divider />
+
         {/* ════════ 03 ════════ */}
-        <Screen bg="bg-[#11141a]">
+        <Screen bg="bg-[#11141a]" num="03">
           <L className="text-lg sm:text-xl text-white/35">We don&apos;t sell motivation.</L>
           <L className="text-lg sm:text-xl text-white/35">We don&apos;t sell shortcuts.</L>
           <L className="text-lg sm:text-xl text-white/35">We don&apos;t sell passive income fantasies.</L>
@@ -180,8 +203,10 @@ export default function Home() {
           </L>
         </Screen>
 
+        <Divider />
+
         {/* ════════ 04 ════════ */}
-        <Screen bg="bg-[#0e1014]">
+        <Screen bg="bg-[#0e1014]" num="04">
           <L className="text-2xl sm:text-3xl font-medium text-white/45 leading-snug">One product.</L>
           <L className="text-2xl sm:text-3xl font-medium text-white/60 leading-snug">Fourteen days.</L>
           <L className="text-2xl sm:text-3xl font-medium text-white/75 leading-snug">No skipping.</L>
@@ -189,8 +214,10 @@ export default function Home() {
           <L className="text-5xl sm:text-6xl font-medium text-white/90">Ship.</L>
         </Screen>
 
+        <Divider />
+
         {/* ════════ 05 ════════ */}
-        <Screen bg="bg-[#11141a]">
+        <Screen bg="bg-[#11141a]" num="05">
           <L className="text-lg sm:text-xl text-white/50">Before effort → demand.</L>
           <L className="text-lg sm:text-xl text-white/50">Before demand → clarity.</L>
           <L className="text-lg sm:text-xl text-white/50">Before clarity → stop guessing.</L>
@@ -200,8 +227,10 @@ export default function Home() {
           <L className="text-xl sm:text-2xl text-white/28">Not inspiration.</L>
         </Screen>
 
+        <Divider />
+
         {/* ════════ 06 ════════ */}
-        <Screen bg="bg-[#0e1014]">
+        <Screen bg="bg-[#0e1014]" num="06">
           <L className="text-xl sm:text-2xl text-white/38">You don&apos;t enter a course.</L>
           <L className="text-2xl sm:text-3xl font-medium text-white/80">You enter a system.</L>
           <Sp size="h-10" />
@@ -210,8 +239,28 @@ export default function Home() {
           <L className="font-mono text-sm sm:text-base text-white/55">Launch Engine™ → structures.</L>
         </Screen>
 
+        <Divider />
+
         {/* ════════ 07 ════════ */}
-        <Screen bg="bg-[#11141a]">
+        <Screen bg="bg-[#11141a]" num="07">
+          <L className="text-xl sm:text-2xl text-white/38">This is not philosophy.</L>
+          <L className="text-2xl sm:text-3xl font-medium text-white/80">It&apos;s a system.</L>
+          <Rule />
+          <L className="text-sm sm:text-base text-white/50">14-Day Roadmap</L>
+          <L className="text-sm sm:text-base text-white/50">Product Profile™ Framework</L>
+          <L className="text-sm sm:text-base text-white/50">Market Proof Score™ Rubric</L>
+          <L className="text-sm sm:text-base text-white/50">50+ AI Prompts — copy-paste ready</L>
+          <L className="text-sm sm:text-base text-white/50">Templates — page, emails, legal</L>
+          <L className="text-sm sm:text-base text-white/50">Lifetime Updates</L>
+          <Rule />
+          <L className="text-xs sm:text-sm text-white/22">Works with any free AI tool.</L>
+          <L className="text-xs sm:text-sm text-white/22">No subscription required.</L>
+        </Screen>
+
+        <Divider />
+
+        {/* ════════ 08 ════════ */}
+        <Screen bg="bg-[#0e1014]" num="08">
           <L className="text-lg sm:text-xl text-white/38">
             Let&apos;s say you&apos;re a 9&#8209;to&#8209;5 employee.
           </L>
@@ -226,11 +275,32 @@ export default function Home() {
           <L className="text-xl sm:text-2xl font-medium text-white/75">Real.</L>
         </Screen>
 
-        {/* ════════ 08 — ACCESS ════════ */}
+        <Divider />
+
+        {/* ════════ 09 ════════ */}
+        <Screen bg="bg-[#11141a]" num="09">
+          <L className="text-2xl sm:text-3xl font-medium text-white/80">Not for everyone.</L>
+          <Sp size="h-10" />
+          <L className="text-base text-white/28">If you want results without effort — not for you.</L>
+          <L className="text-base text-white/28">If you want done&#8209;for&#8209;you — not for you.</L>
+          <L className="text-base text-white/28">If you want viral shortcuts — not for you.</L>
+          <L className="text-base text-white/28">If you want motivation, not structure — not for you.</L>
+          <Sp size="h-10" />
+          <L className="text-base text-white/60">If you want to ship one real product — enter.</L>
+          <L className="text-base text-white/60">If you want to validate before you build — enter.</L>
+          <L className="text-base text-white/60">If you want to stop restarting — enter.</L>
+        </Screen>
+
+        <Divider />
+
+        {/* ════════ 10 — ACCESS ════════ */}
         <section
           id="access"
-          className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 bg-[#0e1014]"
+          className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 bg-[#0e1014]"
         >
+          <span className="absolute top-7 left-6 sm:left-8 font-mono text-[10px] text-white/18 tracking-[0.3em] select-none">
+            10
+          </span>
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%]"
             style={{
@@ -243,12 +313,16 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            className="w-full max-w-lg text-center relative z-10"
+            className="w-full max-w-2xl text-center relative z-10"
           >
             <L className="text-3xl sm:text-4xl font-medium text-white/80">Access.</L>
             <Sp size="h-3" />
             <L className="text-5xl sm:text-6xl font-medium text-white">$49.</L>
-            <Sp size="h-8" />
+            <Sp size="h-5" />
+            <L className="text-xs sm:text-sm text-white/35 max-w-xs mx-auto leading-relaxed">
+              Early access locks in the $49 price before public release.
+            </L>
+            <Sp size="h-6" />
             <L className="text-base text-white/30">One time.</L>
             <L className="text-base text-white/30">No subscription.</L>
             <L className="text-base text-white/30">No upsells.</L>
@@ -259,8 +333,10 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ════════ 09 — AUTHORITY ════════ */}
-        <Screen bg="bg-[#11141a]">
+        <Divider />
+
+        {/* ════════ 11 — AUTHORITY ════════ */}
+        <Screen bg="bg-[#11141a]" num="11">
           <L className="font-mono text-[10px] tracking-[0.3em] text-white/18 uppercase">
             Authority
           </L>
@@ -279,6 +355,25 @@ export default function Home() {
               hello@oneproductai.com
             </a>
           </motion.p>
+        </Screen>
+
+        <Divider />
+
+        {/* ════════ 12 — DECISION ════════ */}
+        <Screen id="decide" bg="bg-[#0e1014]" num="12">
+          <L className="text-xl sm:text-2xl text-white/50">You&apos;ve read this far.</L>
+          <Sp size="h-4" />
+          <L className="text-2xl sm:text-3xl font-medium text-white/78 leading-snug">
+            You already know if this is for you.
+          </L>
+          <Sp size="h-10" />
+          <L className="text-sm text-white/22">No pressure.</L>
+          <L className="text-sm text-white/22">No countdown.</L>
+          <L className="text-sm text-white/22">No urgency.</L>
+          <Sp size="h-10" />
+          <motion.div variants={fade} className="flex justify-center">
+            <EmailCapture />
+          </motion.div>
         </Screen>
 
       </main>
