@@ -218,9 +218,9 @@ export default function Home() {
 
         {/* ════════ 05 ════════ */}
         <Screen bg="bg-[#11141a]" num="05">
-          <L className="text-lg sm:text-xl text-white/50">Before effort → demand.</L>
-          <L className="text-lg sm:text-xl text-white/50">Before demand → clarity.</L>
-          <L className="text-lg sm:text-xl text-white/50">Before clarity → stop guessing.</L>
+          <L className="text-lg sm:text-xl text-white/50">Clarity before building.</L>
+          <L className="text-lg sm:text-xl text-white/50">Demand before effort.</L>
+          <L className="text-lg sm:text-xl text-white/50">Structure before action.</L>
           <Sp size="h-8" />
           <L className="text-2xl sm:text-3xl font-medium text-white/85">This is architecture.</L>
           <Sp size="h-2" />

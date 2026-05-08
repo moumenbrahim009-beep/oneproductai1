@@ -71,7 +71,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="bg-[#0A0A0A] text-white antialiased selection:bg-blue-500/30"
+        className="bg-[#09090f] text-white antialiased selection:bg-blue-500/30"
         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
       >
         {children}
